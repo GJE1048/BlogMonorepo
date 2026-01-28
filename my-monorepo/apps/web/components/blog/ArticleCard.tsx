@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Code2 } from 'lucide-react';
+import { Code2, MessageSquare } from 'lucide-react';
 
 interface ArticleCardProps {
   title: string;
@@ -9,6 +9,7 @@ interface ArticleCardProps {
   tags: string[];
   isCodeArticle?: boolean;
   href: string;
+  commentCount?: number;
 }
 
 export function ArticleCard({
@@ -19,6 +20,7 @@ export function ArticleCard({
   tags,
   isCodeArticle = false,
   href,
+  commentCount = 0,
 }: ArticleCardProps) {
   const isTech = isCodeArticle || tags.some(tag => ['typescript', 'react', 'next.js', 'node.js', 'rust', 'python'].includes(tag.toLowerCase()));
   
@@ -28,9 +30,9 @@ export function ArticleCard({
   return (
     <Link 
       href={href}
-      className="group block rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden transition-all hover:shadow-xl hover:-translate-y-0.5"
+      className="group flex flex-col h-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden transition-all hover:shadow-xl hover:-translate-y-0.5"
     >
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-grow">
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-4">
           {isTech && (
@@ -62,7 +64,7 @@ export function ArticleCard({
         </p>
 
         {/* Meta */}
-        <div className="flex items-center text-sm text-[var(--color-muted)]">
+        <div className="flex items-center text-sm text-[var(--color-muted)] mt-auto">
           <time dateTime={date}>{date}</time>
           <span className="mx-2">•</span>
           <span>{readingTime}</span>
@@ -73,6 +75,16 @@ export function ArticleCard({
               <span className="flex items-center text-[var(--color-accent)]">
                  <Code2 size={12} className="mr-1" />
                  {snippetCount} 个代码片段
+              </span>
+             </>
+          )}
+
+          {commentCount > 0 && (
+             <>
+              <span className="mx-2">•</span>
+              <span className="flex items-center">
+                 <MessageSquare size={12} className="mr-1" />
+                 {commentCount}
               </span>
              </>
           )}

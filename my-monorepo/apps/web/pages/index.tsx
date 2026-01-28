@@ -56,27 +56,22 @@ export default function Home({ posts, author }: { posts: PostSummary[]; author: 
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post, index) => {
-              // First post is featured (large)
-              const isFeatured = index === 0;
-              
-              return (
-                <div 
-                  key={post.id} 
-                  className={isFeatured ? "md:col-span-2 lg:col-span-2 row-span-2" : ""}
-                >
-                  <ArticleCard 
-                    title={post.title}
-                    excerpt={post.excerpt}
-                    date={post.publishedAt}
-                    readingTime={post.readingTime}
-                    tags={post.tags}
-                    href={`/posts/${post.id}`}
-                    commentCount={post.commentCount}
-                  />
-                </div>
-              );
-            })}
+            {posts.map((post) => (
+              <div 
+                key={post.id} 
+                className="h-full"
+              >
+                <ArticleCard 
+                  title={post.title}
+                  excerpt={post.excerpt}
+                  date={new Date(post.publishedAt).toISOString().split('T')[0]}
+                  readingTime={post.readingTime}
+                  tags={post.tags}
+                  href={`/posts/${post.id}`}
+                  commentCount={post.commentCount}
+                />
+              </div>
+            ))}
           </div>
         </section>
       </Layout>
