@@ -3,8 +3,12 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Button } from './ui/Button';
+import { useTheme } from '../lib/theme';
 
 export function NavBar() {
+  const { theme, toggleTheme } = useTheme();
+  const nextLabel = theme === 'dark' ? '浅色' : '深色';
+
   return (
     <header className="navbar">
       <div className="navbar-left">
@@ -61,6 +65,18 @@ export function NavBar() {
           </Dialog.Portal>
         </Dialog.Root>
 
+        <Tooltip.Root>
+          <Tooltip.Trigger asChild>
+            <button className="theme-toggle" onClick={toggleTheme}>
+              {nextLabel}
+            </button>
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content className="tooltip-content" sideOffset={6}>
+              切换到{nextLabel}模式
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
         <Tooltip.Root>
           <Tooltip.Trigger asChild>
             <button className="icon-button">⋯</button>
