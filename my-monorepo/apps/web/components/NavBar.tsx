@@ -20,6 +20,7 @@ export function NavBar() {
           <Link href="/" className="hover:text-[var(--color-text)] transition-colors">首页</Link>
           <Link href="/" className="hover:text-[var(--color-text)] transition-colors">专栏</Link>
           <Link href="/" className="hover:text-[var(--color-text)] transition-colors">关于</Link>
+          <Link href="/code" className="hover:text-[var(--color-text)] transition-colors">代码</Link>
         </nav>
       </div>
       
