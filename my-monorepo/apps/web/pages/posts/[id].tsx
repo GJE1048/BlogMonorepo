@@ -90,9 +90,12 @@ export default function PostDetailPage({ post, comments }: { post: PostDetail; c
           </div>
         </article>
         
-        <Separator.Root className="h-px bg-[var(--color-border)] w-full max-w-3xl mx-auto mb-16" />
+        <Separator.Root className={cn(
+          "h-px bg-[var(--color-border)] w-full mx-auto mb-16",
+          isCodeArticle ? "max-w-4xl" : "max-w-3xl"
+        )} />
         
-        <CommentSection postId={post.id} initialComments={comments} />
+        <CommentSection postId={post.id} initialComments={comments} isCodeArticle={isCodeArticle} />
       </Layout>
     </>
   );

@@ -7,7 +7,15 @@ import { createComment } from '../lib/api';
 import { Button } from './ui/Button';
 import { cn } from '../lib/cn';
 
-export function CommentSection({ postId, initialComments }: { postId: string; initialComments: Comment[] }) {
+export function CommentSection({ 
+  postId, 
+  initialComments,
+  isCodeArticle = false 
+}: { 
+  postId: string; 
+  initialComments: Comment[];
+  isCodeArticle?: boolean;
+}) {
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [open, setOpen] = useState(false);
   const [author, setAuthor] = useState('');
@@ -37,7 +45,10 @@ export function CommentSection({ postId, initialComments }: { postId: string; in
   };
 
   return (
-    <section className="flex flex-col gap-8 max-w-3xl mx-auto pb-20">
+    <section className={cn(
+      "flex flex-col gap-8 mx-auto pb-20 px-4 sm:px-6 lg:px-8",
+      isCodeArticle ? "max-w-4xl" : "max-w-3xl"
+    )}>
       <div className="flex items-end justify-between">
         <div className="flex flex-col gap-1">
           <h3 className="text-xl font-bold text-[var(--color-text)] flex items-center gap-2">
