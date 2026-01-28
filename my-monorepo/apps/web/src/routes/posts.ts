@@ -3,17 +3,12 @@ import { query } from '../db/neon';
 
 const router = Router();
 
-const baseAuthor = {
-  stats: {
-    posts: 128,
-    followers: 24650,
-    readingHours: 1820,
-  },
-  links: [
-    { label: '专栏', href: '#' },
-    { label: '订阅', href: '#' },
-    { label: '合作', href: '#' },
-  ],
+const labelToTags = (label?: string): string[] => {
+  if (!label) return [];
+  if (label === '专栏') return [];
+  if (label === '订阅') return [];
+  if (label === '合作') return ['协作'];
+  return [label];
 };
 
 const normalizeTags = (tags: unknown) => {
@@ -38,41 +33,125 @@ const mapRowToPost = (row: any, commentCount = 0) => ({
   readingTime: row.reading_time,
   coverColor: row.cover_color,
   author: {
-    name: row.author_name ?? '林知夏',
-    title: row.author_title ?? '产品设计师 / 写作者',
-    bio: row.author_bio ?? '关注体验与效率的交汇点，记录关于设计、产品与 AI 的长期观察。',
-    ...baseAuthor,
+    name: row.author_name ?? 'Unknown',
+    title: row.author_title ?? '',
+    bio: row.author_bio ?? '',
+    avatarUrl: row.author_avatar_url ?? undefined,
+    stats: {
+      posts: row.author_article_count ?? 0,
+      followers: row.author_follower_count ?? 0,
+      readingHours: row.author_total_reads ?? 0,
+      weeklyCompletion: row.author_weekly_completion_rate ?? 0,
+    },
+    links: row.author_social_links || [],
   },
   commentCount,
 });
 
 router.get('/', async (_req, res) => {
   try {
-    console.log('[DB] GET /posts -> querying posts with comment counts');
-    const rows = await query<any>(
-      `
-      SELECT p.*, COUNT(c.id) AS comment_count
+    const { label } = (_req.query ?? {}) as { label?: string };
+    const tagsFilter = labelToTags(label);
+    console.log('[DB] GET /posts -> label:', label, 'tagsFilter:', tagsFilter);
+
+    let rows: any[];
+    const selectClause = `
+      SELECT p.*, COUNT(c.id) AS comment_count,
+             a.name as author_name, a.title as author_title, a.bio as author_bio, 
+             a.avatar_url as author_avatar_url, a.article_count as author_article_count,
+             a.follower_count as author_follower_count, a.total_reads as author_total_reads,
+             a.weekly_completion_rate as author_weekly_completion_rate, a.social_links as author_social_links
       FROM posts p
       LEFT JOIN comments c ON c.post_id = p.id
-      GROUP BY p.id
-      ORDER BY p.published_at DESC
+      LEFT JOIN authors a ON p.author_id = a.id
+    `;
+
+    if (tagsFilter.length > 0) {
+      rows = await query<any>(
+        `
+        ${selectClause}
+        WHERE p.tags && $1::text[]
+        GROUP BY p.id, a.id
+        ORDER BY p.published_at DESC
+        `,
+        [tagsFilter]
+      );
+    } else {
+      rows = await query<any>(
+        `
+        ${selectClause}
+        GROUP BY p.id, a.id
+        ORDER BY p.published_at DESC
+        `
+      );
+    }
+    const posts = rows.map((row: any) =>
+      mapRowToPost(row, Number(row.comment_count || 0))
+    );
+    return res.json(posts);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Failed to load posts' });
+  }
+});
+
+router.get('/label/:label', async (req, res) => {
+  try {
+    const { label } = req.params;
+    const tagsFilter = labelToTags(label);
+    console.log('[DB] GET /posts/label/:label ->', label, 'tagsFilter:', tagsFilter);
+    
+    const selectClause = `
+      SELECT p.*, COUNT(c.id) AS comment_count,
+             a.name as author_name, a.title as author_title, a.bio as author_bio, 
+             a.avatar_url as author_avatar_url, a.article_count as author_article_count,
+             a.follower_count as author_follower_count, a.total_reads as author_total_reads,
+             a.weekly_completion_rate as author_weekly_completion_rate, a.social_links as author_social_links
+      FROM posts p
+      LEFT JOIN comments c ON c.post_id = p.id
+      LEFT JOIN authors a ON p.author_id = a.id
+    `;
+
+    const rows = await query<any>(
       `
+      ${selectClause}
+      ${tagsFilter.length > 0 ? 'WHERE p.tags && $1::text[]' : ''}
+      GROUP BY p.id, a.id
+      ORDER BY p.published_at DESC
+      `,
+      tagsFilter.length > 0 ? [tagsFilter] : []
     );
     const posts = rows.map((row: any) =>
       mapRowToPost(row, Number(row.comment_count || 0))
     );
     return res.json(posts);
   } catch (error) {
-    return res.status(500).json({ message: 'Failed to load posts' });
+    console.error(error);
+    return res.status(500).json({ message: 'Failed to load posts by label' });
   }
 });
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
+  // Validate ID format (must be integer for SERIAL id)
+  if (!/^\d+$/.test(id)) {
+    console.warn(`[DB] GET /posts/${id} -> Invalid ID format`);
+    return res.status(400).json({ message: 'Invalid post ID' });
+  }
+
   try {
     console.log(`[DB] GET /posts/${id} -> querying single post and comment count`);
-    const rows = await query<any>('SELECT * FROM posts WHERE id = $1 LIMIT 1', [id]);
+    const rows = await query<any>(`
+      SELECT p.*, 
+             a.name as author_name, a.title as author_title, a.bio as author_bio, 
+             a.avatar_url as author_avatar_url, a.article_count as author_article_count,
+             a.follower_count as author_follower_count, a.total_reads as author_total_reads,
+             a.weekly_completion_rate as author_weekly_completion_rate, a.social_links as author_social_links
+      FROM posts p
+      LEFT JOIN authors a ON p.author_id = a.id
+      WHERE p.id = $1 LIMIT 1
+    `, [id]);
     const post = rows[0];
     if (!post) return res.status(404).json({ message: 'Post not found' });
     const commentCount = await query<{ count: number }>('SELECT COUNT(*)::int AS count FROM comments WHERE post_id = $1', [id]);
@@ -81,6 +160,7 @@ router.get('/:id', async (req, res) => {
       content: post.content,
     });
   } catch (error) {
+    console.error(`[DB] GET /posts/${id} -> Error:`, error);
     return res.status(500).json({ message: 'Failed to load post' });
   }
 });

@@ -41,10 +41,13 @@ export function Sidebar({ author }: { author: Author }) {
         <div className="progress-block">
           <div className="progress-label">
             <span>本周内容完成度</span>
-            <span>72%</span>
+            <span>{author.stats.weeklyCompletion ?? 0}%</span>
           </div>
-          <Progress.Root className="progress-root" value={72}>
-            <Progress.Indicator className="progress-indicator" style={{ width: '72%' }} />
+          <Progress.Root className="progress-root" value={author.stats.weeklyCompletion ?? 0}>
+            <Progress.Indicator 
+              className="progress-indicator" 
+              style={{ width: `${author.stats.weeklyCompletion ?? 0}%` }} 
+            />
           </Progress.Root>
         </div>
         <div className="sidebar-links">

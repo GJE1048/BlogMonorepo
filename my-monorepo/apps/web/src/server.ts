@@ -6,16 +6,13 @@ import { corsMiddleware } from './middlewares/cors';
 import { helmetMiddleware } from './middlewares/helmet';
 import { errorHandler } from './middlewares/errorHandler';
 import { isDbConfigured } from './db/neon';
-import { initDatabase } from './db/seed';
 
 const app = express();
 
 const bootstrap = async () => {
-  if (isDbConfigured) {
-    await initDatabase();
-  } else {
+  if (!isDbConfigured) {
     // eslint-disable-next-line no-console
-    console.warn('DATABASE_URL is not configured. Using in-memory sample data.');
+    console.warn('DATABASE_URL is not configured. API may fail.');
   }
 };
 

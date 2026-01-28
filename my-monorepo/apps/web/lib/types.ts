@@ -7,6 +7,7 @@ export type Author = {
     posts: number;
     followers: number;
     readingHours: number;
+    weeklyCompletion?: number;
   };
   links: {
     label: string;

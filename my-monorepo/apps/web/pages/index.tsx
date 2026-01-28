@@ -1,13 +1,10 @@
 import Head from 'next/head';
 import { Layout } from '../components/Layout';
 import { PostCard } from '../components/PostCard';
-import { fetchPosts } from '../lib/api';
-import { primaryAuthor } from '../lib/sampleData';
-import type { PostSummary } from '../lib/types';
+import { fetchAuthor, fetchPosts } from '../lib/api';
+import type { Author, PostSummary } from '../lib/types';
 
-export default function Home({ posts }: { posts: PostSummary[] }) {
-  const author = posts[0]?.author ?? primaryAuthor;
-
+export default function Home({ posts, author }: { posts: PostSummary[]; author: Author }) {
   return (
     <>
       <Head>
@@ -48,11 +45,17 @@ export default function Home({ posts }: { posts: PostSummary[] }) {
   );
 }
 
-export async function getServerSideProps() {
-  const posts = await fetchPosts();
+export async function getServerSideProps(context: { query: { label?: string } }) {
+  const label = context.query.label;
+  const [posts, author] = await Promise.all([
+    fetchPosts(label),
+    fetchAuthor('1') // Fetch default author (ID 1)
+  ]);
+  
   return {
     props: {
       posts,
+      author,
     },
   };
 }

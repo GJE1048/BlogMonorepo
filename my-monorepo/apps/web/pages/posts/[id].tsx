@@ -4,11 +4,10 @@ import * as Separator from '@radix-ui/react-separator';
 import { Layout } from '../../components/Layout';
 import { CommentSection } from '../../components/CommentSection';
 import { fetchComments, fetchPostById } from '../../lib/api';
-import { primaryAuthor } from '../../lib/sampleData';
 import type { Comment, PostDetail } from '../../lib/types';
 
 export default function PostDetailPage({ post, comments }: { post: PostDetail; comments: Comment[] }) {
-  const author = post.author ?? primaryAuthor;
+  const author = post.author;
   const paragraphs = post.content.split('\n\n');
 
   return (
