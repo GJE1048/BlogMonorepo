@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { query, isDbConfigured } from '../db/neon';
-import { sampleComments, samplePosts } from '../data/sampleData';
+import { query } from '../db/neon';
 
 const router = Router();
 
@@ -48,18 +47,9 @@ const mapRowToPost = (row: any, commentCount = 0) => ({
 });
 
 router.get('/', async (_req, res) => {
-  if (!isDbConfigured) {
-    const posts = samplePosts.map((post) =>
-      mapRowToPost(
-        post,
-        (sampleComments[post.id]?.length ?? 0)
-      )
-    );
-    return res.json(posts);
-  }
-
   try {
-    const rows = await query(
+    console.log('[DB] GET /posts -> querying posts with comment counts');
+    const rows = await query<any>(
       `
       SELECT p.*, COUNT(c.id) AS comment_count
       FROM posts p
@@ -80,20 +70,12 @@ router.get('/', async (_req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
-  if (!isDbConfigured) {
-    const post = samplePosts.find((item) => item.id === id);
-    if (!post) return res.status(404).json({ message: 'Post not found' });
-    return res.json({
-      ...mapRowToPost(post, sampleComments[id]?.length ?? 0),
-      content: post.content,
-    });
-  }
-
   try {
-    const rows = await query('SELECT * FROM posts WHERE id = $1 LIMIT 1', [id]);
+    console.log(`[DB] GET /posts/${id} -> querying single post and comment count`);
+    const rows = await query<any>('SELECT * FROM posts WHERE id = $1 LIMIT 1', [id]);
     const post = rows[0];
     if (!post) return res.status(404).json({ message: 'Post not found' });
-    const commentCount = await query('SELECT COUNT(*)::int AS count FROM comments WHERE post_id = $1', [id]);
+    const commentCount = await query<{ count: number }>('SELECT COUNT(*)::int AS count FROM comments WHERE post_id = $1', [id]);
     return res.json({
       ...mapRowToPost(post, commentCount[0]?.count ?? 0),
       content: post.content,
@@ -105,18 +87,10 @@ router.get('/:id', async (req, res) => {
 
 router.get('/:id/comments', async (req, res) => {
   const { id } = req.params;
-  if (!isDbConfigured) {
-    const comments = (sampleComments[id] ?? []).map((comment) => ({
-      id: comment.id,
-      author: comment.author,
-      content: comment.content,
-      createdAt: comment.created_at,
-    }));
-    return res.json(comments);
-  }
 
   try {
-    const rows = await query(
+    console.log(`[DB] GET /posts/${id}/comments -> querying comments`);
+    const rows = await query<any>(
       'SELECT id, author, content, created_at FROM comments WHERE post_id = $1 ORDER BY created_at DESC',
       [id]
     );
@@ -140,25 +114,9 @@ router.post('/:id/comments', async (req, res) => {
     return res.status(400).json({ message: 'author and content are required' });
   }
 
-  if (!isDbConfigured) {
-    const newComment = {
-      id: `c-${Date.now()}`,
-      author,
-      content,
-      created_at: new Date().toISOString().slice(0, 10),
-    };
-    const current = sampleComments[id] ?? [];
-    sampleComments[id] = [newComment, ...current];
-    return res.status(201).json({
-      id: newComment.id,
-      author: newComment.author,
-      content: newComment.content,
-      createdAt: newComment.created_at,
-    });
-  }
-
   try {
-    const rows = await query(
+    console.log(`[DB] POST /posts/${id}/comments -> inserting comment`);
+    const rows = await query<{ id: number; author: string; content: string; created_at: string }>(
       'INSERT INTO comments (post_id, author, content) VALUES ($1, $2, $3) RETURNING id, author, content, created_at',
       [id, author, content]
     );

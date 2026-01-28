@@ -93,9 +93,11 @@ const seedPosts = async () => {
       ]
     );
   }
+  console.log('Database seeded successfully.');
 };
 
 export const initDatabase = async () => {
+  console.log('Initializing database tables...');
   await createTables();
   await seedPosts();
 };
