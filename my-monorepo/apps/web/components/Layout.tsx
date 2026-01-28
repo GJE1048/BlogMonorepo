@@ -1,15 +1,26 @@
-import type { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 import { NavBar } from './NavBar';
 import { Sidebar } from './Sidebar';
 import type { Author } from '../lib/types';
 
-export function Layout({ author, children }: PropsWithChildren<{ author: Author }>) {
+interface LayoutProps {
+  author: Author;
+  hero?: React.ReactNode;
+  children: React.ReactNode;
+}
+
+export function Layout({ author, hero, children }: LayoutProps) {
   return (
-    <div className="page">
-      <NavBar />
-      <div className="layout">
-        <Sidebar author={author} />
-        <main className="content">{children}</main>
+    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] pb-20 font-sans selection:bg-[var(--color-accent-soft)] selection:text-[var(--color-accent)]">
+      <div className="px-6 md:px-12">
+        <NavBar />
+      </div>
+      {hero}
+      <div className="px-6 md:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-8 max-w-7xl mx-auto mt-8">
+          <Sidebar author={author} className="order-last md:order-first" />
+          <main className="flex flex-col gap-8 min-w-0">{children}</main>
+        </div>
       </div>
     </div>
   );
