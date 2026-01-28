@@ -1,3 +1,0 @@
-apps/web/src/components/card/src/index.ts
-
-export { default } from './Card';
