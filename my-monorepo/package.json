@@ -1,0 +1,29 @@
+{
+  "name": "my-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^1.0.0",
+    "typescript": "^4.0.0",
+    "eslint": "^7.0.0",
+    "prettier": "^2.0.0"
+  },
+  "dependencies": {
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "next": "^12.0.0",
+    "express": "^4.17.1",
+    "prisma": "^3.0.0",
+    "pg": "^8.7.1",
+    "vite": "^2.0.0"
+  }
+}

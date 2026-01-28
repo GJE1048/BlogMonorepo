@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["dom", "esnext"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@libs/*": ["libs/*"],
+      "@apps/*": ["apps/*"]
+    },
+    "outDir": "./dist",
+    "rootDir": "./"
+  },
+  "include": ["apps/**/*", "libs/**/*", "configs/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
