@@ -24,8 +24,16 @@ export function ArticleCard({
 }: ArticleCardProps) {
   const isTech = isCodeArticle || tags.some(tag => ['typescript', 'react', 'next.js', 'node.js', 'rust', 'python'].includes(tag.toLowerCase()));
   
-  // Simulated snippet count for now
-  const snippetCount = isTech ? Math.floor(Math.random() * 5) + 1 : 0;
+  // Use a deterministic hash based on title to ensure consistent snippet count between server and client
+  const getPseudoRandom = (str: string) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return Math.abs(hash);
+  };
+
+  const snippetCount = isTech ? (getPseudoRandom(title) % 5) + 1 : 0;
 
   return (
     <Link 
