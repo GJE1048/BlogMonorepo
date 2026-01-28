@@ -5,8 +5,19 @@ import apiRouter from './routes';
 import { corsMiddleware } from './middlewares/cors';
 import { helmetMiddleware } from './middlewares/helmet';
 import { errorHandler } from './middlewares/errorHandler';
+import { isDbConfigured } from './db/neon';
+import { initDatabase } from './db/seed';
 
 const app = express();
+
+const bootstrap = async () => {
+  if (isDbConfigured) {
+    await initDatabase();
+  } else {
+    // eslint-disable-next-line no-console
+    console.warn('DATABASE_URL is not configured. Using in-memory sample data.');
+  }
+};
 
 app.use(helmetMiddleware);
 app.use(corsMiddleware);
@@ -20,7 +31,15 @@ app.use('/api', apiRouter);
 
 app.use(errorHandler);
 
-app.listen(config.port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Blog API running on http://localhost:${config.port}`);
-});
+bootstrap()
+  .then(() => {
+    app.listen(config.port, () => {
+      // eslint-disable-next-line no-console
+      console.log(`Blog API running on http://localhost:${config.port}`);
+    });
+  })
+  .catch((error) => {
+    // eslint-disable-next-line no-console
+    console.error('Failed to start API server', error);
+    process.exit(1);
+  });

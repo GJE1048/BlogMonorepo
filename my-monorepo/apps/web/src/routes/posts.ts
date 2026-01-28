@@ -73,13 +73,7 @@ router.get('/', async (_req, res) => {
     );
     return res.json(posts);
   } catch (error) {
-    const posts = samplePosts.map((post) =>
-      mapRowToPost(
-        post,
-        (sampleComments[post.id]?.length ?? 0)
-      )
-    );
-    return res.json(posts);
+    return res.status(500).json({ message: 'Failed to load posts' });
   }
 });
 
@@ -105,12 +99,7 @@ router.get('/:id', async (req, res) => {
       content: post.content,
     });
   } catch (error) {
-    const post = samplePosts.find((item) => item.id === id);
-    if (!post) return res.status(404).json({ message: 'Post not found' });
-    return res.json({
-      ...mapRowToPost(post, sampleComments[id]?.length ?? 0),
-      content: post.content,
-    });
+    return res.status(500).json({ message: 'Failed to load post' });
   }
 });
 
@@ -139,13 +128,7 @@ router.get('/:id/comments', async (req, res) => {
     }));
     return res.json(comments);
   } catch (error) {
-    const comments = (sampleComments[id] ?? []).map((comment) => ({
-      id: comment.id,
-      author: comment.author,
-      content: comment.content,
-      createdAt: comment.created_at,
-    }));
-    return res.json(comments);
+    return res.status(500).json({ message: 'Failed to load comments' });
   }
 });
 

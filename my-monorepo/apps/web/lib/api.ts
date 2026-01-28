@@ -3,8 +3,8 @@ import { sampleComments, samplePostDetails, samplePosts } from './sampleData';
 
 const normalizeApiBase = () => {
   const envUrl = process.env.NEXT_PUBLIC_API_URL || '';
-  if (!envUrl || envUrl.includes('your-api-url.com')) {
-    return 'http://localhost:4000/api';
+  if (!envUrl || envUrl.includes('http://localhost:4001/api')) {
+    return 'http://localhost:4001/api';
   }
   return envUrl.replace(/\/$/, '');
 };
