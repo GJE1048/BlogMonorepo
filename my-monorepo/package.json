@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "vercel-build": "npm --prefix apps/web ci && npm --prefix apps/web run build",
+    "vercel-build": "cd apps/web && next build",
     "lint": "turbo run lint",
     "test": "turbo run test"
   },
