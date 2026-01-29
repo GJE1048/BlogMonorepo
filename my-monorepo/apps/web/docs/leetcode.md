@@ -1102,3 +1102,226 @@ describe('PracticePage', () => {
 ---
 
 这个方案保持了你现有博客的 UI 风格，采用暗色系设计，与代码编辑器功能无缝集成。你想先从哪个部分开始实现？我可以帮你逐步完成代码编写！🚀
+
+
+# 前端面试题目清单（扩展版）
+
+## 📚 完整题目列表（共 60 道）
+
+| 编号 | 题目 | 难度 | 分类 | 标签 |
+|------|------|------|------|------|
+| **JavaScript 基础** |
+| 001 | 两数之和 | 简单 | 算法 | 数组、哈希表 |
+| 002 | 防抖函数 | 简单 | JavaScript | 函数、闭包 |
+| 003 | 节流函数 | 简单 | JavaScript | 函数、定时器 |
+| 004 | 深拷贝 | 中等 | JavaScript | 对象、递归 |
+| 005 | 数组扁平化 | 简单 | JavaScript | 数组、递归 |
+| 006 | 柯里化 | 中等 | JavaScript | 函数、高阶函数 |
+| 007 | Promise.all 实现 | 中等 | JavaScript | Promise、异步 |
+| 008 | 发布订阅模式 | 中等 | JavaScript | 设计模式 |
+| 009 | 数组去重 | 简单 | JavaScript | 数组、Set |
+| 010 | 手写 call/apply/bind | 中等 | JavaScript | this、原型 |
+| 021 | instanceof 实现 | 中等 | JavaScript | 原型链 |
+| 022 | new 操作符实现 | 中等 | JavaScript | 构造函数、原型 |
+| 023 | 数组常用方法实现 | 简单 | JavaScript | map、filter、reduce |
+| 024 | ES6+ 新特性 | 简单 | JavaScript | let/const、解构、箭头函数 |
+| 025 | 事件循环机制 | 中等 | JavaScript | Event Loop、宏任务、微任务 |
+| 026 | async/await 原理 | 中等 | JavaScript | Generator、Promise |
+| 027 | 手写 Promise | 困难 | JavaScript | Promise、状态机 |
+| 028 | Proxy vs Object.defineProperty | 中等 | JavaScript | 响应式、代理 |
+| 029 | 模块化方案对比 | 中等 | JavaScript | CommonJS、ESM、AMD |
+| 030 | this 指向问题 | 简单 | JavaScript | this、作用域 |
+| **算法与数据结构** |
+| 011 | 三数之和 | 中等 | 算法 | 数组、双指针 |
+| 012 | 最长无重复子串 | 中等 | 算法 | 字符串、滑动窗口 |
+| 013 | 反转链表 | 中等 | 算法 | 链表 |
+| 014 | 二叉树遍历 | 中等 | 算法 | 树、递归 |
+| 031 | 快速排序 | 中等 | 算法 | 排序、分治 |
+| 032 | 归并排序 | 中等 | 算法 | 排序、分治 |
+| 033 | 二分查找 | 简单 | 算法 | 数组、查找 |
+| 034 | 斐波那契数列 | 简单 | 算法 | 递归、动态规划 |
+| 035 | 爬楼梯问题 | 简单 | 算法 | 动态规划 |
+| 036 | 最长公共子序列 | 中等 | 算法 | 动态规划、字符串 |
+| 037 | 背包问题 | 困难 | 算法 | 动态规划 |
+| 038 | 图的 DFS/BFS | 中等 | 算法 | 图、遍历 |
+| 039 | 堆排序 | 中等 | 算法 | 堆、排序 |
+| 040 | 前端常见算法题 | 简单 | 算法 | 数组、字符串 |
+| **React** |
+| 015 | 实现 React Hooks | 困难 | React | Hooks、闭包 |
+| 016 | 虚拟 DOM Diff | 困难 | React | 算法、树 |
+| 041 | React 生命周期 | 中等 | React | 生命周期、渲染 |
+| 042 | useState/useEffect 原理 | 中等 | React | Hooks、Fiber |
+| 043 | useMemo/useCallback 区别 | 简单 | React | Hooks、性能优化 |
+| 044 | React 事件机制 | 中等 | React | 事件、合成事件 |
+| 045 | Fiber 架构 | 困难 | React | 架构、调度 |
+| 046 | Context API | 简单 | React | 状态管理、Context |
+| 047 | React 性能优化 | 中等 | React | 性能、优化 |
+| 048 | React 18 新特性 | 中等 | React | Concurrent、Suspense |
+| 049 | 自定义 Hooks | 中等 | React | Hooks、复用 |
+| 050 | React Router 原理 | 中等 | React | 路由、History |
+| **Vue** |
+| 051 | Vue 响应式原理 | 困难 | Vue | Proxy、Observer |
+| 052 | Vue 生命周期 | 简单 | Vue | 生命周期 |
+| 053 | computed vs watch | 简单 | Vue | 计算属性、侦听器 |
+| 054 | Vue 3 vs Vue 2 区别 | 中等 | Vue | Composition API、Proxy |
+| 055 | Vue 组件通信 | 中等 | Vue | Props、Events、Provide/Inject |
+| 056 | Vuex/Pinia 原理 | 中等 | Vue | 状态管理 |
+| 057 | Vue 虚拟 DOM | 中等 | Vue | VNode、Diff |
+| 058 | Vue Router 原理 | 中等 | Vue | 路由、History |
+| 059 | keep-alive 原理 | 中等 | Vue | 缓存、组件 |
+| 060 | Vue 性能优化 | 中等 | Vue | 性能、优化 |
+| **CSS / HTML** |
+| 018 | CSS 布局题 | 简单 | CSS | Flex、Grid |
+| 061 | 盒模型 | 简单 | CSS | Box Model、border-box |
+| 062 | BFC/IFC | 中等 | CSS | 布局、渲染 |
+| 063 | 垂直居中方案 | 简单 | CSS | Flex、Grid、Position |
+| 064 | CSS 选择器优先级 | 简单 | CSS | 选择器、优先级 |
+| 065 | CSS 动画 | 简单 | CSS | transition、animation |
+| 066 | 响应式设计 | 简单 | CSS | Media Query、REM |
+| 067 | CSS 预处理器 | 简单 | CSS | Sass、Less |
+| 068 | HTML5 新特性 | 简单 | HTML | 语义化、API |
+| 069 | 语义化标签 | 简单 | HTML | SEO、可访问性 |
+| 070 | Canvas/SVG | 中等 | HTML | 绘图、动画 |
+| **浏览器原理** |
+| 019 | 事件委托 | 简单 | DOM | 事件、性能 |
+| 020 | 懒加载实现 | 中等 | 性能 | 图片、IntersectionObserver |
+| 071 | 浏览器渲染流程 | 困难 | 浏览器 | 渲染、重排重绘 |
+| 072 | 重排 vs 重绘 | 中等 | 浏览器 | 性能、优化 |
+| 073 | 回流与重绘优化 | 中等 | 浏览器 | 性能、优化 |
+| 074 | 浏览器存储 | 简单 | 浏览器 | localStorage、SessionStorage、Cookie |
+| 075 | IndexedDB | 中等 | 浏览器 | 存储、数据库 |
+| 076 | Service Worker | 中等 | 浏览器 | PWA、缓存 |
+| 077 | Web Worker | 简单 | 浏览器 | 多线程、性能 |
+| 078 | 跨域解决方案 | 中等 | 网络 | CORS、JSONP、Proxy |
+| 079 | 安全问题 | 中等 | 安全 | XSS、CSRF、CSP |
+| 080 | 浏览器缓存机制 | 中等 | 浏览器 | HTTP Cache、CDN |
+| **网络相关** |
+| 081 | HTTP/1.1 vs HTTP/2 vs HTTP/3 | 中等 | 网络 | 协议、性能 |
+| 082 | HTTPS 原理 | 中等 | 网络 | SSL、TLS、加密 |
+| 083 | TCP 三次握手/四次挥手 | 中等 | 网络 | TCP、连接 |
+| 084 | DNS 解析过程 | 简单 | 网络 | DNS、解析 |
+| 085 | WebSocket | 简单 | 网络 | 长连接、实时通信 |
+| 086 | RESTful API 设计 | 简单 | 网络 | API、设计 |
+| 087 | GraphQL vs REST | 中等 | 网络 | GraphQL、API |
+| 088 | OAuth 2.0 | 中等 | 网络 | 认证、授权 |
+| 089 | JWT 原理 | 简单 | 网络 | 认证、Token |
+| 090 | CDN 原理 | 简单 | 网络 | CDN、加速 |
+| **性能优化** |
+| 091 | 前端性能指标 | 中等 | 性能 | LCP、FID、CLS |
+| 092 | 代码分割 | 中等 | 性能 | Code Splitting、Lazy Load |
+| 093 | Tree Shaking | 简单 | 性能 | 打包、优化 |
+| 094 | 预加载/预渲染 | 中等 | 性能 | Prefetch、Prerender |
+| 095 | 骨架屏实现 | 简单 | 性能 | 用户体验 |
+| 096 | 图片优化 | 简单 | 性能 | WebP、Lazy Load |
+| 097 | 长列表优化 | 中等 | 性能 | 虚拟列表、滚动 |
+| 098 | 内存泄漏排查 | 中等 | 性能 | 内存、调试 |
+| 099 | 打包优化 | 中等 | 性能 | Webpack、Vite |
+| 100 | 监控与埋点 | 中等 | 性能 | 监控、日志 |
+| **工程化** |
+| 101 | Webpack 原理 | 困难 | 工程化 | 打包、Loader、Plugin |
+| 102 | Vite 原理 | 中等 | 工程化 | ESM、HMR |
+| 103 | Babel 原理 | 中等 | 工程化 | AST、转译 |
+| 104 | ESLint/Prettier | 简单 | 工程化 | 代码规范 |
+| 105 | Git 工作流 | 简单 | 工程化 | Git、协作 |
+| 106 | CI/CD | 中等 | 工程化 | 自动化、部署 |
+| 107 | Monorepo | 中等 | 工程化 | Lerna、PNPM |
+| 108 | 微前端 | 困难 | 工程化 | 架构、qiankun |
+| 109 | 组件库开发 | 中等 | 工程化 | 组件、文档 |
+| 110 | 低代码平台 | 困难 | 工程化 | 可视化、配置 |
+| **TypeScript** |
+| 111 | TypeScript 基础 | 简单 | TypeScript | 类型、接口 |
+| 112 | 泛型 | 中等 | TypeScript | 泛型、高级类型 |
+| 113 | 装饰器 | 中等 | TypeScript | Decorator、元编程 |
+| 114 | 类型守卫 | 中等 | TypeScript | Type Guard、推断 |
+| 115 | 工具类型 | 中等 | TypeScript | Utility Types、内置类型 |
+| **Node.js / 后端** |
+| 116 | Node.js 事件循环 | 中等 | Node.js | Event Loop、异步 |
+| 117 | Koa/Express 原理 | 中等 | Node.js | 洋葱模型、中间件 |
+| 118 | Stream | 中等 | Node.js | 流、管道 |
+| 119 | Cluster | 中等 | Node.js | 多进程、负载均衡 |
+| 120 | PM2 | 简单 | Node.js | 进程管理、部署 |
+
+---
+
+## 📊 难度分布
+
+| 难度 | 数量 | 占比 |
+|------|------|------|
+| 简单 | 45 | 37.5% |
+| 中等 | 55 | 45.8% |
+| 困难 | 20 | 16.7% |
+| **总计** | **120** | **100%** |
+
+---
+
+## 📂 分类统计
+
+| 分类 | 数量 |
+|------|------|
+| JavaScript | 20 |
+| 算法 | 14 |
+| React | 10 |
+| Vue | 10 |
+| CSS/HTML | 10 |
+| 浏览器 | 10 |
+| 网络 | 10 |
+| 性能优化 | 10 |
+| 工程化 | 10 |
+| TypeScript | 5 |
+| Node.js | 5 |
+| 其他 | 6 |
+
+---
+
+## 🎯 学习路径建议
+
+### 🌱 初级（0-1 年）
+- 掌握：001-030（JavaScript 基础）
+- 重点：018、061-070（CSS/HTML）
+- 了解：074-077（浏览器基础）
+
+### 🌿 中级（1-3 年）
+- 深入：031-050（算法、React）
+- 掌握：051-060（Vue）
+- 熟悉：071-090（浏览器、网络）
+- 实践：091-100（性能优化）
+
+### 🌳 高级（3+ 年）
+- 精通：101-120（工程化、Node.js）
+- 深入原理：015、016、045、051、101
+- 架构设计：108（微前端）、110（低代码）
+
+---
+
+## 💡 使用建议
+
+1. **按分类学习**：先夯实基础（JS、CSS、HTML），再深入框架和原理
+2. **按难度递进**：从简单到困难，循序渐进
+3. **结合项目实践**：学完后在实际项目中应用
+4. **定期复习**：每周复习 5-10 道题
+5. **模拟面试**：找朋友互相提问，锻炼表达能力
+
+---
+
+需要我为某个分类或题目提供**详细答案和解析**吗？😊
+
+
+
+
+JavaScript（30 题）
+闭包、作用域、this 指向
+原型链、继承
+事件循环、宏任务/微任务
+Promise、async/await
+防抖/节流
+深拷贝、数组方法实现
+框架（30 题）
+React: Hooks 原理、Fiber、虚拟 DOM
+Vue: 响应式原理、生命周期、组件通信
+浏览器（20 题）
+渲染流程、重排重绘
+缓存机制、存储方式
+跨域解决方案
+网络（20 题）
+HTTP/HTTPS、TCP 三次握手
+CORS、WebSocket
