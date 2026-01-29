@@ -17,7 +17,7 @@ export default function PracticePage({ author }: { author: Author }) {
   );
 
   return (
-    <Layout author={author}>
+    <Layout author={author} showSidebar={false}>
       <div className="container max-w-5xl mx-auto py-12 px-4">
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">

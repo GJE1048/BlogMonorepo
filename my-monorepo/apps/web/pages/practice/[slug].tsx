@@ -11,6 +11,7 @@ import { usePracticeStore } from '../../store/practiceStore';
 import { MarkdownRenderer } from '../../components/MarkdownRenderer';
 import { cn } from '../../lib/cn';
 import { Button } from '../../components/ui/Button';
+import { SandpackPreviewPanel } from '../../components/practice/SandpackPreviewPanel';
 import { fetchAuthor } from '../../lib/api';
 import type { Author } from '../../lib/types';
 
@@ -24,13 +25,23 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
   const [output, setOutput] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [activeTab, setActiveTab] = useState<'description' | 'solution'>('description');
+  const [activeBottomTab, setActiveBottomTab] = useState<'console' | 'preview'>('console');
+
+  const isFrontend = problem ? (
+    problem.tags.some(t => ['React', 'Vue', 'DOM', 'CSS', 'Frontend'].includes(t)) || 
+    problem.category === 'React' || 
+    problem.category === 'CSS'
+  ) : false;
 
   useEffect(() => {
     if (problem) {
       const saved = getCode(problem.id);
       setCode(saved || problem.templateCode);
+      if (isFrontend) {
+        setActiveBottomTab('preview');
+      }
     }
-  }, [problem, getCode]);
+  }, [problem, getCode, isFrontend]);
 
   if (!problem) {
     return (
@@ -84,7 +95,7 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
   };
 
   return (
-    <Layout author={author}>
+    <Layout author={author} showSidebar={false}>
       <div className="h-[calc(100vh-64px)] flex flex-col">
         {/* Header */}
         <div className="border-b border-border bg-card p-4 flex justify-between items-center">

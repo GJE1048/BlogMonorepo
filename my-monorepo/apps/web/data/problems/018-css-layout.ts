@@ -17,29 +17,49 @@ The container has class \`.container\` and the item has class \`.item\`.
 
 \`\`\`css
 .container {
-  /* Your code here */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 \`\`\`
 `,
-  templateCode: `/**
- * Return the CSS string
- * @return {string}
- */
-var getCSS = function() {
-  return \`
-.container {
-  width: 500px;
-  height: 500px;
-  /* Add your layout code here */
-}
-.item {
-  width: 100px;
-  height: 100px;
-}
-  \`;
-};`,
+  templateCode: `import React from 'react';
+
+export default function App() {
+  return (
+    <div className="p-4">
+      <h2 className="mb-4 text-xl font-bold">CSS Center Layout</h2>
+      
+      <div className="container">
+        <div className="item">Center Me</div>
+      </div>
+
+      <style>{\`
+        .container {
+          width: 300px;
+          height: 300px;
+          background: #1f2937;
+          border-radius: 8px;
+          /* Add your layout code here */
+          
+        }
+        
+        .item {
+          width: 100px;
+          height: 100px;
+          background: #3b82f6;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+        }
+      \`}</style>
+    </div>
+  );
+}`,
   testCases: [
-    { input: [], output: 'css-string' } // Simplified validation
+    { input: [], output: 'css-string' } // Visual verification mostly
   ],
   hints: [
     "Flexbox: display: flex; justify-content: center; align-items: center;",

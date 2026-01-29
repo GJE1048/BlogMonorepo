@@ -5,13 +5,13 @@ import {
   SandpackPreview, 
 } from '@codesandbox/sandpack-react';
 
-interface SandpackPreviewProps {
+interface SandpackPreviewPanelProps {
   code: string;
   template?: 'react' | 'vanilla' | 'static';
   files?: Record<string, any>;
 }
 
-export const SandpackPreview: React.FC<SandpackPreviewProps> = ({ 
+export const SandpackPreviewPanel: React.FC<SandpackPreviewPanelProps> = ({ 
   code, 
   template = 'react',
   files = {}
@@ -30,7 +30,7 @@ export const SandpackPreview: React.FC<SandpackPreviewProps> = ({
   };
 
   return (
-    <div className="h-full w-full border border-border rounded-lg overflow-hidden">
+    <div className="h-full w-full border-none overflow-hidden bg-[#1e1e1e]">
       <SandpackProvider 
         template={template} 
         theme="dark"
@@ -49,12 +49,12 @@ export const SandpackPreview: React.FC<SandpackPreviewProps> = ({
           } 
         }}
       >
-        <SandpackLayout style={{ height: '100%', border: 'none' }}>
+        <SandpackLayout style={{ height: '100%', border: 'none', borderRadius: 0 }}>
           <SandpackPreview 
             style={{ height: '100%' }} 
             showOpenInCodeSandbox={false} 
             showRefreshButton={true}
-            showNavigator={true}
+            showNavigator={false}
           />
         </SandpackLayout>
       </SandpackProvider>
