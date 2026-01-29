@@ -28,15 +28,19 @@ app.use('/api', apiRouter);
 
 app.use(errorHandler);
 
-bootstrap()
-  .then(() => {
-    app.listen(config.port, () => {
+if (require.main === module) {
+  bootstrap()
+    .then(() => {
+      app.listen(config.port, () => {
+        // eslint-disable-next-line no-console
+        console.log(`Blog API running on http://localhost:${config.port}`);
+      });
+    })
+    .catch((error) => {
       // eslint-disable-next-line no-console
-      console.log(`Blog API running on http://localhost:${config.port}`);
+      console.error('Failed to start API server', error);
+      process.exit(1);
     });
-  })
-  .catch((error) => {
-    // eslint-disable-next-line no-console
-    console.error('Failed to start API server', error);
-    process.exit(1);
-  });
+}
+
+export { app };
