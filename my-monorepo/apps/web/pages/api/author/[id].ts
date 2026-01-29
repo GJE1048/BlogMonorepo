@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       bio: author.bio,
       avatarUrl: author.avatar_url,
       stats: {
-        articles: author.article_count,
+        posts: author.article_count,
         followers: author.follower_count,
         readingHours: author.total_reads, 
         weeklyCompletion: author.weekly_completion_rate,
