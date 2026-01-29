@@ -103,15 +103,12 @@ export default function PostDetailPage({ post, comments }: { post: PostDetail; c
 
 export async function getServerSideProps(context: { params?: { id?: string } }) {
   const id = context.params?.id ?? '';
-  const post = await fetchPostById(id);
-  if (!post) {
+  try {
+    const post = await fetchPostById(id);
+    if (!post) return { notFound: true };
+    const comments = await fetchComments(id);
+    return { props: { post, comments } };
+  } catch (_err) {
     return { notFound: true };
   }
-  const comments = await fetchComments(id);
-  return {
-    props: {
-      post,
-      comments,
-    },
-  };
 }

@@ -192,10 +192,18 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
 }
 
 export async function getServerSideProps() {
-  const author = await fetchAuthor('1');
-  return {
-    props: {
-      author,
-    },
-  };
+  try {
+    const author = await fetchAuthor('1');
+    return { props: { author } };
+  } catch (_err) {
+    const author: Author = {
+      name: '知夏',
+      title: '内容与产品',
+      avatarUrl: '',
+      bio: '结构化表达与长期复用。',
+      stats: { posts: 0, followers: 0, readingHours: 0, weeklyCompletion: 0 },
+      links: [],
+    };
+    return { props: { author } };
+  }
 }

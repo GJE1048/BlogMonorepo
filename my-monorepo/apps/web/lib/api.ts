@@ -2,10 +2,13 @@ import type { Author, Comment, PostDetail, PostSummary } from './types';
 
 const normalizeApiBase = () => {
   const envUrl = process.env.NEXT_PUBLIC_API_URL || '';
-  if (!envUrl || envUrl.includes('http://localhost:4001/api')) {
+  if (envUrl) {
+    return envUrl.replace(/\/$/, '');
+  }
+  if (process.env.NODE_ENV === 'development') {
     return 'http://localhost:4001/api';
   }
-  return envUrl.replace(/\/$/, '');
+  return '';
 };
 
 const apiBase = normalizeApiBase();
