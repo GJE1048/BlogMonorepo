@@ -3,12 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -n \"NEXT,API\" -c \"cyan,magenta\" \"next dev\" \"npm run dev:api\"",
-    "dev:next": "next dev",
-    "dev:api": "tsx watch src/server.ts",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "start:api": "tsx src/server.ts",
     "lint": "eslint ."
   },
   "dependencies": {
