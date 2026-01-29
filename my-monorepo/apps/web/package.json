@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently -n \"NEXT,API\" -c \"cyan,magenta\" \"next dev\" \"npm run dev:api\"",
+    "dev:next": "next dev",
     "dev:api": "tsx watch src/server.ts",
     "build": "next build",
     "start": "next start",
@@ -47,6 +48,7 @@
     "@types/react": "19.2.10",
     "@types/react-syntax-highlighter": "^15.5.13",
     "autoprefixer": "^10.4.17",
+    "concurrently": "^9.2.1",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "^8.4.35",
