@@ -82,6 +82,74 @@ export default function App() {
     </div>
   );
 }`,
+  solutionCode: `import React, { useState, useEffect, createContext, useContext } from 'react';
+
+const RouterContext = createContext();
+
+// 1. HashRouter Component
+export function HashRouter({ children }) {
+  const [path, setPath] = useState(
+    typeof window !== 'undefined' 
+      ? window.location.hash.slice(1) || '/' 
+      : '/'
+  );
+
+  useEffect(() => {
+    // Listen to hashchange
+    const handleHashChange = () => {
+      setPath(window.location.hash.slice(1) || '/');
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
+  return (
+    <RouterContext.Provider value={path}>
+      {children}
+    </RouterContext.Provider>
+  );
+}
+
+// 2. Route Component
+export function Route({ path, component: Component }) {
+  // Render component only if current path matches
+  const currentPath = useContext(RouterContext);
+  return currentPath === path ? <Component /> : null;
+}
+
+// 3. Link Component
+export function Link({ to, children }) {
+  return (
+    <a href={'#' + to} className="text-blue-500 underline mx-2 hover:text-blue-700">
+      {children}
+    </a>
+  );
+}
+
+// Usage Example
+const Home = () => <div className="p-4 bg-gray-50 rounded">Home Page Content</div>;
+const About = () => <div className="p-4 bg-gray-50 rounded">About Page Content</div>;
+
+export default function App() {
+  return (
+    <div className="p-4">
+      <HashRouter>
+        <nav className="mb-4 border-b pb-2">
+          <Link to="/home">Home</Link>
+          <Link to="/about">About</Link>
+        </nav>
+        
+        <div className="border p-4 rounded min-h-[100px]">
+          <Route path="/home" component={Home} />
+          <Route path="/about" component={About} />
+        </div>
+      </HashRouter>
+    </div>
+  );
+}`,
   testCases: [],
   hints: [
     "In HashRouter, window.addEventListener('hashchange', ...).",

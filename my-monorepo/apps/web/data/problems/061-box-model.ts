@@ -28,6 +28,10 @@ Set all elements to use \`border-box\`.
   /* Your code here */
   
 }`,
+  solutionCode: `/* Add CSS to set border-box globally */
+*, *::before, *::after {
+  box-sizing: border-box;
+}`,
   testCases: [],
   hints: [
     "box-sizing: border-box;"

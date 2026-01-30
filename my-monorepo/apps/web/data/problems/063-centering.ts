@@ -40,6 +40,29 @@ Implement 3 different ways to center a child element inside a parent element (bo
 .child-absolute {
   /* Your code here */
 }`,
+  solutionCode: `/* Method 1: Flexbox */
+.parent-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Method 2: Grid */
+.parent-grid {
+  display: grid;
+  place-items: center;
+}
+
+/* Method 3: Absolute */
+.parent-absolute {
+  position: relative;
+}
+.child-absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}`,
   testCases: [],
   hints: [
     "Flex: justify-content: center; align-items: center;",

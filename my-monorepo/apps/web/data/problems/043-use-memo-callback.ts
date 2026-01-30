@@ -58,6 +58,46 @@ export default function App() {
     </div>
   );
 }`,
+  solutionCode: `import React, { useState, useMemo, useCallback } from 'react';
+
+const Child = React.memo(({ onClick, value }) => {
+  console.log('Child Rendered');
+  return <button onClick={onClick} className="btn border p-2 bg-blue-100 rounded">Child: {value}</button>;
+});
+
+export default function App() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState('');
+
+  // 1. Create a memoized value 'expensiveValue' based on 'text'
+  const expensiveValue = useMemo(() => {
+    console.log('Calculating expensive value...');
+    return text.toUpperCase();
+  }, [text]);
+
+  // 2. Create a memoized callback 'handleClick' that increments count
+  // Note: If we want Child not to re-render when 'text' changes, 
+  // handleClick should not depend on 'text'.
+  // However, here we just want a stable function reference.
+  const handleClick = useCallback(() => {
+    setCount(c => c + 1);
+  }, []); // Empty dependency array ensures stable reference
+
+  return (
+    <div className="p-4">
+      <h1 className="text-xl mb-4">Count: {count}</h1>
+      <input 
+        value={text} 
+        onChange={e => setText(e.target.value)} 
+        className="border p-2 mb-4 block w-full rounded"
+        placeholder="Type here..." 
+      />
+      <p className="mb-4">Computed: {expensiveValue}</p>
+      {/* Pass props to Child */}
+      <Child onClick={handleClick} value={count} />
+    </div>
+  );
+}`,
   testCases: [],
   hints: [
     "useMemo(() => compute(a, b), [a, b]) returns a value.",

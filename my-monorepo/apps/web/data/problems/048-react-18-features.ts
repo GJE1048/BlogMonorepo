@@ -65,6 +65,49 @@ export default function App() {
     </div>
   );
 }`,
+  solutionCode: `import React, { useState, useTransition } from 'react';
+
+export default function App() {
+  const [input, setInput] = useState('');
+  const [list, setList] = useState([]);
+  const [isPending, startTransition] = useTransition();
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    // Urgent update: Update input field immediately
+    setInput(value);
+    
+    // Non-urgent update: Update the list inside startTransition
+    startTransition(() => {
+      // Simulate heavy calculation
+      const l = [];
+      for (let i = 0; i < 5000; i++) {
+        if (!value || (value + ' ' + i).includes(value)) {
+           l.push(value + ' Item ' + i);
+        }
+      }
+      setList(l);
+    });
+  };
+
+  return (
+    <div className="p-4">
+      <input 
+        value={input} 
+        onChange={handleChange} 
+        className="border p-2 w-full mb-4 rounded"
+        placeholder="Type to filter (try typing fast)..." 
+      />
+      {isPending && <p className="text-blue-500 mb-2">Updating list...</p>}
+      <ul className="h-60 overflow-auto border p-2 rounded bg-gray-50">
+        {list.length === 0 && <li className="text-gray-400">List is empty</li>}
+        {list.map((item, index) => (
+          <li key={index} className="border-b last:border-0 py-1">{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}`,
   testCases: [],
   hints: [
     "Import useTransition from 'react'.",

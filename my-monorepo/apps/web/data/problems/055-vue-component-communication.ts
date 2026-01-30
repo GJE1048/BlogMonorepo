@@ -49,6 +49,42 @@ const Child = {
   },
   template: \`<button @click="$emit('update', 'World')">Update</button>\`
 };`,
+  solutionCode: `// Parent Component
+import { ref } from 'vue';
+
+// Simulate importing Child
+// import Child from './Child.vue';
+
+export default {
+  // components: { Child },
+  setup() {
+    const parentMsg = ref('Hello');
+    const handleUpdate = (val) => {
+      console.log('Parent received:', val);
+      parentMsg.value = val;
+    };
+    return { parentMsg, handleUpdate };
+  },
+  template: \`
+    <div>
+      <h1>Parent: {{ parentMsg }}</h1>
+      <Child :msg="parentMsg" @update="handleUpdate" />
+    </div>
+  \`
+}
+
+// Child Component definition (simulate)
+const Child = {
+  props: ['msg'],
+  emits: ['update'],
+  setup(props, { emit }) {
+    const handleClick = () => {
+      emit('update', 'World ' + Math.random().toFixed(2));
+    };
+    return { handleClick };
+  },
+  template: \`<button @click="handleClick">Update Parent</button>\`
+};`,
   testCases: [],
   hints: [
     "Props are read-only.",

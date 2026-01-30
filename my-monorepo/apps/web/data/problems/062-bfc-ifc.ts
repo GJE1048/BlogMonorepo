@@ -24,6 +24,12 @@ Write CSS to create a BFC on the \`.container\` element without changing its vis
   /* Add property to trigger BFC */
   
 }`,
+  solutionCode: `.container {
+  /* Add property to trigger BFC */
+  overflow: hidden; 
+  /* Or use display: flow-root; */
+  /* Or use display: flex; */
+}`,
   testCases: [],
   hints: [
     "overflow: hidden",

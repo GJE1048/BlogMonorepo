@@ -37,6 +37,46 @@ function createRouter(options) {
     }
   };
 }`,
+  solutionCode: `import { ref, computed, markRaw } from 'vue';
+
+function createRouter(options) {
+  // 1. Define reactive current path
+  const currentHash = ref(window.location.hash.slice(1) || '/');
+
+  // 2. Listen to hashchange
+  window.addEventListener('hashchange', () => {
+    currentHash.value = window.location.hash.slice(1) || '/';
+  });
+
+  // 3. Return router object with install method
+  return {
+    install(app) {
+      // Provide router or register global components
+      app.config.globalProperties.$router = this;
+      
+      app.component('RouterView', {
+        setup() {
+          const currentRoute = computed(() => {
+            const route = options.routes.find(r => r.path === currentHash.value);
+            return route ? route.component : null;
+          });
+
+          return () => {
+             const Component = currentRoute.value;
+             return Component ? h(Component) : null;
+          };
+        }
+      });
+      
+      app.component('RouterLink', {
+        props: ['to'],
+        setup(props, { slots }) {
+          return () => h('a', { href: '#' + props.to }, slots.default());
+        }
+      });
+    }
+  };
+}`,
   testCases: [],
   hints: [
     "Use ref() to store currentHash.",

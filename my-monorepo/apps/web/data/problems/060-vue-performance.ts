@@ -47,6 +47,31 @@ export default {
     return { largeData, updateWholeData, updateProperty };
   }
 }`,
+  solutionCode: `import { shallowRef, triggerRef } from 'vue';
+
+export default {
+  setup() {
+    // Use shallowRef for a large object
+    const largeData = shallowRef({ list: [] });
+    
+    // Simulate initial data load
+    largeData.value = { list: Array(1000).fill(0).map((_, i) => i) };
+
+    function updateWholeData(newData) {
+      // This should trigger
+      largeData.value = newData;
+    }
+    
+    function updateProperty() {
+      // This should NOT trigger automatically unless triggerRef is used
+      largeData.value.list[0] = 999;
+      // Manually trigger
+      triggerRef(largeData);
+    }
+
+    return { largeData, updateWholeData, updateProperty };
+  }
+}`,
   testCases: [],
   hints: [
     "shallowRef only tracks .value changes.",

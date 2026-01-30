@@ -37,6 +37,33 @@ function bfs(graph, start) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {Record<string, string[]>} graph
+ * @param {string} start
+ * @return {string[]}
+ */
+function bfs(graph, start) {
+  const queue = [start];
+  const visited = new Set();
+  const result = [];
+  
+  visited.add(start);
+  
+  while (queue.length > 0) {
+    const node = queue.shift();
+    result.push(node);
+    
+    const neighbors = graph[node] || [];
+    for (const neighbor of neighbors) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push(neighbor);
+      }
+    }
+  }
+  
+  return result;
+}`,
   testCases: [
     { 
       input: [

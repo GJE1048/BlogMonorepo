@@ -169,8 +169,23 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
                   </div>
                 </>
               ) : (
-                <div className="text-muted-foreground">
-                  Solution is not available yet.
+                <div className="space-y-4">
+                  {problem.solutionCode ? (
+                    <div className="rounded-md overflow-hidden border border-border">
+                      <div className="bg-muted px-4 py-2 text-xs font-mono text-muted-foreground border-b border-border">
+                        Solution Reference
+                      </div>
+                      <div className="p-4 bg-[#1e1e1e] overflow-x-auto">
+                        <pre className="text-sm font-mono text-[#d4d4d4]">
+                          <code>{problem.solutionCode}</code>
+                        </pre>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-muted-foreground p-4">
+                      Solution is not available yet.
+                    </div>
+                  )}
                 </div>
               )}
             </div>

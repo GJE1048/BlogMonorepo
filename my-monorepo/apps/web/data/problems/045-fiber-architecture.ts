@@ -52,6 +52,33 @@ function workLoop(deadline) {
 // if (typeof requestIdleCallback !== 'undefined') {
 //   requestIdleCallback(workLoop);
 // }`,
+  solutionCode: `// Simulate a unit of work (e.g., rendering a fiber node)
+function performUnitOfWork(work) {
+  // Process current work
+  console.log('Processing:', work);
+  // Return next unit of work or null
+  return work - 1 > 0 ? work - 1 : null;
+}
+
+let nextUnitOfWork = 100; // Start with 100 units
+
+function workLoop(deadline) {
+  // Implement the work loop using deadline.timeRemaining()
+  while (nextUnitOfWork && deadline.timeRemaining() > 1) {
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+  }
+  
+  if (nextUnitOfWork) {
+    requestIdleCallback(workLoop);
+  } else {
+    console.log('All work done!');
+  }
+}
+
+// Start the loop (uncomment to test in environment supporting requestIdleCallback)
+// if (typeof requestIdleCallback !== 'undefined') {
+//   requestIdleCallback(workLoop);
+// }`,
   testCases: [],
   hints: [
     "Use a while loop checking `nextUnitOfWork` and `deadline.timeRemaining() > 1`.",

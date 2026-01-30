@@ -32,6 +32,19 @@ function h(tag, props, children) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {string} tag
+ * @param {object} props
+ * @param {string|array} children
+ * @return {object}
+ */
+function h(tag, props, children) {
+  return {
+    tag,
+    props: props || {},
+    children: Array.isArray(children) ? children : [String(children)]
+  };
+}`,
   testCases: [
     { 
       input: ['div', { id: 'app' }, 'text'], 

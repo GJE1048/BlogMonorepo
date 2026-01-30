@@ -65,6 +65,35 @@ export default function EventDemo() {
     </div>
   );
 }`,
+  solutionCode: `import React from 'react';
+
+export default function EventDemo() {
+  const handleDivClick = (e) => {
+    // Log div click
+    console.log('Div clicked');
+  };
+
+  const handleBtnClick = (e) => {
+    // Stop propagation and log button click
+    e.stopPropagation();
+    console.log('Button clicked');
+    console.log('Native Event:', e.nativeEvent);
+  };
+
+  return (
+    <div 
+      onClick={handleDivClick} 
+      className="p-10 bg-gray-200"
+    >
+      <button 
+        onClick={handleBtnClick}
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+      >
+        Click Me (Stop Propagation)
+      </button>
+    </div>
+  );
+}`,
   testCases: [],
   hints: [
     "e.stopPropagation() stops the event from bubbling up.",

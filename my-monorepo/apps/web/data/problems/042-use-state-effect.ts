@@ -67,6 +67,40 @@ const React = (function() {
 
   return { useState, useEffect, render };
 })();`,
+  solutionCode: `const MyReact = (function() {
+  let hooks = [];
+  let idx = 0;
+
+  function useState(initVal) {
+    const state = hooks[idx] !== undefined ? hooks[idx] : initVal;
+    const _idx = idx;
+    const setState = (newVal) => {
+      hooks[_idx] = newVal;
+    };
+    idx++;
+    return [state, setState];
+  }
+
+  function useEffect(cb, depArray) {
+    const oldDeps = hooks[idx];
+    let hasChanged = true;
+    if (oldDeps) {
+      hasChanged = depArray.some((dep, i) => !Object.is(dep, oldDeps[i]));
+    }
+    if (hasChanged) cb();
+    hooks[idx] = depArray;
+    idx++;
+  }
+
+  function render(Component) {
+    idx = 0;
+    const C = Component();
+    C.render();
+    return C;
+  }
+
+  return { useState, useEffect, render };
+})();`,
   testCases: [],
   hints: [
     "Store state in the `hooks` array at the current `idx`.",

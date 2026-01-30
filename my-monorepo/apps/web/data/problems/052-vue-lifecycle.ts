@@ -44,6 +44,28 @@ export default {
     return { count };
   }
 }`,
+  solutionCode: `import { onMounted, onUpdated, onUnmounted, ref } from 'vue';
+
+export default {
+  setup() {
+    const count = ref(0);
+    
+    // Implement hooks here
+    onMounted(() => {
+      console.log('Component Mounted');
+    });
+
+    onUpdated(() => {
+      console.log('Component Updated (count: ' + count.value + ')');
+    });
+
+    onUnmounted(() => {
+      console.log('Component Unmounted');
+    });
+
+    return { count };
+  }
+}`,
   testCases: [],
   hints: [
     "Import hooks from 'vue'.",

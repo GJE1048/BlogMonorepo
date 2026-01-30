@@ -48,6 +48,57 @@ function reactive(target) {
 function effect(fn) {
   // Your code here
 }`,
+  solutionCode: `const targetMap = new WeakMap();
+let activeEffect = null;
+
+function track(target, key) {
+  if (!activeEffect) return;
+  
+  let depsMap = targetMap.get(target);
+  if (!depsMap) {
+    targetMap.set(target, (depsMap = new Map()));
+  }
+  
+  let dep = depsMap.get(key);
+  if (!dep) {
+    depsMap.set(key, (dep = new Set()));
+  }
+  
+  dep.add(activeEffect);
+}
+
+function trigger(target, key) {
+  const depsMap = targetMap.get(target);
+  if (!depsMap) return;
+  
+  const dep = depsMap.get(key);
+  if (dep) {
+    dep.forEach(effect => effect());
+  }
+}
+
+function reactive(target) {
+  return new Proxy(target, {
+    get(target, key, receiver) {
+      track(target, key);
+      return Reflect.get(target, key, receiver);
+    },
+    set(target, key, value, receiver) {
+      const oldValue = target[key];
+      const result = Reflect.set(target, key, value, receiver);
+      if (oldValue !== value) {
+        trigger(target, key);
+      }
+      return result;
+    }
+  });
+}
+
+function effect(fn) {
+  activeEffect = fn;
+  fn();
+  activeEffect = null;
+}`,
   testCases: [],
   hints: [
     "Use a global 'activeEffect' to store the current running effect.",

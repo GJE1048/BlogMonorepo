@@ -41,6 +41,24 @@ export default {
     return {};
   }
 }`,
+  solutionCode: `import { ref, computed } from 'vue';
+
+export default {
+  setup() {
+    // Rewrite using Composition API
+    const count = ref(0);
+    
+    const increment = () => {
+      count.value++;
+    };
+    
+    const double = computed(() => {
+      return count.value * 2;
+    });
+    
+    return { count, increment, double };
+  }
+}`,
   testCases: [],
   hints: [
     "Use ref for reactive data.",

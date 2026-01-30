@@ -45,6 +45,54 @@ export default function App() {
     </div>
   );
 }`,
+  solutionCode: `import React, { useState, useEffect } from 'react';
+
+// Implement the custom hook
+function useWindowSize() {
+  // Initialize with undefined to avoid server-side rendering mismatch
+  // or use a default size if acceptable
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+  });
+
+  useEffect(() => {
+    // Handler to call on window resize
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); // Empty array ensures that effect is only run on mount
+
+  return windowSize;
+}
+
+export default function App() {
+  const { width, height } = useWindowSize();
+
+  return (
+    <div className="p-4 text-center">
+      <h2 className="text-2xl">Window Size</h2>
+      <p className="text-xl mt-4 font-mono">
+        {width} x {height}
+      </p>
+      <p className="text-sm text-gray-500 mt-2">
+        Resize the browser window to see updates.
+      </p>
+    </div>
+  );
+}`,
   testCases: [],
   hints: [
     "Use useState to store width and height.",

@@ -66,6 +66,49 @@ export default function App() {
     </div>
   );
 }`,
+  solutionCode: `import React, { useState, useCallback } from 'react';
+
+// Optimize this component
+const Child = React.memo(({ onClick }) => {
+  console.log('Child Rendered');
+  return <button onClick={onClick} className="border p-2 bg-gray-100 hover:bg-gray-200 rounded">Child Button</button>;
+});
+
+export default function App() {
+  const [count, setCount] = useState(0);
+  const [input, setInput] = useState('');
+
+  const handleClick = useCallback(() => {
+    console.log('Button clicked');
+  }, []); // Empty dependency array means this function reference never changes
+
+  return (
+    <div className="p-4">
+      <h1 className="mb-4 text-xl">Count: {count}</h1>
+      <button 
+        className="bg-blue-500 text-white p-2 mr-2 rounded"
+        onClick={() => setCount(count + 1)}
+      >
+        Increment
+      </button>
+      
+      <input 
+        value={input} 
+        onChange={e => setInput(e.target.value)}
+        className="border p-2 mx-2 rounded"
+        placeholder="Type something..."
+      />
+
+      <div className="mt-4">
+        <Child onClick={handleClick} />
+      </div>
+      
+      <p className="mt-4 text-sm text-gray-500">
+        Check console to see if Child re-renders when typing in input.
+      </p>
+    </div>
+  );
+}`,
   testCases: [],
   hints: [
     "Wrap Child with React.memo(Child).",

@@ -38,6 +38,26 @@ export default {
     return { firstName, lastName };
   }
 }`,
+  solutionCode: `import { ref, computed, watch } from 'vue';
+
+export default {
+  setup() {
+    const firstName = ref('John');
+    const lastName = ref('Doe');
+
+    // Implement computed fullName
+    const fullName = computed(() => {
+      return firstName.value + ' ' + lastName.value;
+    });
+    
+    // Implement watch for firstName
+    watch(firstName, (newVal, oldVal) => {
+      console.log(\`First name changed from \${oldVal} to \${newVal}\`);
+    });
+
+    return { firstName, lastName, fullName };
+  }
+}`,
   testCases: [],
   hints: [
     "Computed returns a ref.",

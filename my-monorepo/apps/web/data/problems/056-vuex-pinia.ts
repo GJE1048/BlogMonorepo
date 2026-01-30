@@ -38,6 +38,37 @@ function defineStore(id, setup) {
 
 // Usage for testing
 // const useStore = defineStore('main', () => { ... });`,
+  solutionCode: `import { ref, reactive, effectScope } from 'vue';
+
+const stores = new Map();
+
+function defineStore(id, setup) {
+  return () => {
+    // If store exists, return it
+    if (stores.has(id)) {
+      return stores.get(id);
+    }
+
+    // Create a new scope for the store
+    const scope = effectScope(true);
+    
+    const store = scope.run(() => {
+      const state = setup();
+      return reactive(state);
+    });
+
+    stores.set(id, store);
+    return store;
+  };
+}
+
+// Usage for testing
+// const useCounter = defineStore('counter', () => {
+//   const count = ref(0);
+//   function increment() { count.value++ }
+//   return { count, increment };
+// });
+// const store = useCounter();`,
   testCases: [],
   hints: [
     "Use a singleton map to store state instances.",
