@@ -38,6 +38,22 @@ function createSandbox() {
     
   });
 }`,
+  solutionCode: `/**
+ * @return {Proxy}
+ */
+function createSandbox() {
+  const fakeWindow = {};
+  
+  return new Proxy(window, {
+    get(target, prop) {
+      return prop in fakeWindow ? fakeWindow[prop] : target[prop];
+    },
+    set(target, prop, value) {
+      fakeWindow[prop] = value;
+      return true;
+    }
+  });
+}`,
   testCases: [
     {
       input: [],

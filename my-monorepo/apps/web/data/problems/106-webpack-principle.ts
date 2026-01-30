@@ -28,6 +28,21 @@ function replaceLoader(source, options) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {string} source
+ * @param {object} options
+ * @param {object} options.replacements - Key-value pairs for replacement
+ * @return {string}
+ */
+function replaceLoader(source, options) {
+  let result = source;
+  const replacements = options.replacements || {};
+  for (const key in replacements) {
+    // Replace all occurrences
+    result = result.split(key).join(replacements[key]);
+  }
+  return result;
+}`,
   testCases: [
     {
       input: ['Hello World', { replacements: { 'World': 'Webpack' } }],

@@ -27,6 +27,20 @@ function isUser(value) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {unknown} value
+ * @return {boolean}
+ */
+function isUser(value) {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'name' in value &&
+    typeof value.name === 'string' &&
+    'age' in value &&
+    typeof value.age === 'number'
+  );
+}`,
   testCases: [
     {
       input: [{ name: 'Alice', age: 30 }],

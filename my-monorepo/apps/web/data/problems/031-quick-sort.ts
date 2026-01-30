@@ -29,6 +29,23 @@ function quickSort(arr) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {number[]} arr
+ * @return {number[]}
+ */
+var quickSort = function(arr) {
+  if (arr.length <= 1) return arr;
+  const pivot = arr[Math.floor(arr.length / 2)];
+  const left = [];
+  const right = [];
+  const middle = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < pivot) left.push(arr[i]);
+    else if (arr[i] > pivot) right.push(arr[i]);
+    else middle.push(arr[i]);
+  }
+  return [...quickSort(left), ...middle, ...quickSort(right)];
+};`,
   testCases: [
     { input: [[3, 0, 2, 5, -1, 4, 1]], output: [-1, 0, 1, 2, 3, 4, 5] },
     { input: [[1, 2, 3]], output: [1, 2, 3] },

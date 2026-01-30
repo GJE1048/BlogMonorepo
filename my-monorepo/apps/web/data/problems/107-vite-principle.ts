@@ -29,6 +29,19 @@ function rewriteImports(source) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {string} source
+ * @return {string}
+ */
+function rewriteImports(source) {
+  return source.replace(/import\\s+(?:[\\w\\s{},*]+)\\s+from\\s+["']([^"']+)["']/g, (match, p1) => {
+    if (p1.startsWith('/') || p1.startsWith('.')) return match;
+    return match.replace(p1, '/@modules/' + p1);
+  }).replace(/import\\s+["']([^"']+)["']/g, (match, p1) => {
+    if (p1.startsWith('/') || p1.startsWith('.')) return match;
+    return match.replace(p1, '/@modules/' + p1);
+  });
+}`,
   testCases: [
     {
       input: [`import React from "react";`],

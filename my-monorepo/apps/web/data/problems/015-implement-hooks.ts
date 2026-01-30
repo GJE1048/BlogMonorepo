@@ -29,6 +29,14 @@ function useState(initialValue) {
   
 }
 `,
+  solutionCode: `let state;
+function useState(initialValue) {
+  state = state === undefined ? initialValue : state;
+  const setState = (newValue) => {
+    state = newValue;
+  };
+  return [state, setState];
+}`,
   testCases: [
     { input: [], output: 'simulated' }
   ],

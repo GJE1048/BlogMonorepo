@@ -26,6 +26,15 @@ function createPair(first, second) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @template T, U
+ * @param {T} first
+ * @param {U} second
+ * @return {[T, U]}
+ */
+function createPair(first, second) {
+  return [first, second];
+}`,
   testCases: [
     {
       input: ['hello', 42],

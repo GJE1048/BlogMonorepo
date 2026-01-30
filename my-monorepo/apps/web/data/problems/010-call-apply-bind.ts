@@ -32,6 +32,19 @@ greet.myCall(person); // 'Hello, Alice'
 Function.prototype.myCall = function(context, ...args) {
   
 };`,
+  solutionCode: `/**
+ * @param {any} context
+ * @param {...any} args
+ * @return {any}
+ */
+Function.prototype.myCall = function(context, ...args) {
+  context = context || globalThis;
+  const fnSymbol = Symbol();
+  context[fnSymbol] = this;
+  const result = context[fnSymbol](...args);
+  delete context[fnSymbol];
+  return result;
+};`,
   testCases: [
     { input: [{ name: 'Alice' }], output: 'Hello, Alice' }
   ],

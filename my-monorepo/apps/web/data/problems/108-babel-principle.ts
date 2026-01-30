@@ -40,6 +40,21 @@ function transform(ast, visitor) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {object} ast
+ * @param {object} visitor
+ * @return {object} - The transformed AST
+ */
+function transform(ast, visitor) {
+  if (ast.body) {
+    ast.body.forEach(node => {
+      if (visitor[node.type]) {
+        visitor[node.type](node);
+      }
+    });
+  }
+  return ast;
+}`,
   testCases: [
     {
       input: [

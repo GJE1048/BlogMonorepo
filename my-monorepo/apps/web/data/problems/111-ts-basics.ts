@@ -30,6 +30,23 @@ function getUserInfo(user) {
   // Your code here
   
 }`,
+  solutionCode: `interface User {
+  readonly id: number;
+  name: string;
+  age?: number;
+  email: string;
+}
+
+/**
+ * @param {User} user
+ * @return {string}
+ */
+function getUserInfo(user) {
+  if (user.age !== undefined) {
+    return \`User \${user.name} is \${user.age} years old\`;
+  }
+  return \`User \${user.name}\`;
+}`,
   testCases: [
     {
       input: [{ id: 1, name: 'Alice', age: 25, email: 'alice@example.com' }],

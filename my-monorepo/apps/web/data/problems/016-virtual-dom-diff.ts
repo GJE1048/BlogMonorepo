@@ -30,6 +30,36 @@ const patches = diff(oldTree, newTree);
 var diff = function(oldTree, newTree) {
   
 };`,
+  solutionCode: `/**
+ * @param {Object} oldTree
+ * @param {Object} newTree
+ * @return {Object[]}
+ */
+var diff = function(oldTree, newTree) {
+  const patches = [];
+  if (oldTree.type !== newTree.type) {
+    patches.push({ type: 'REPLACE', newNode: newTree });
+  } else {
+    // Props diff
+    const propsPatches = {};
+    for (const key in oldTree.props) {
+      if (oldTree.props[key] !== newTree.props[key]) {
+        propsPatches[key] = newTree.props[key];
+      }
+    }
+    for (const key in newTree.props) {
+      if (!(key in oldTree.props)) {
+        propsPatches[key] = newTree.props[key];
+      }
+    }
+    if (Object.keys(propsPatches).length > 0) {
+      patches.push({ type: 'PROPS', props: propsPatches });
+    }
+    // Children diff (simplified)
+    // In a real implementation, we would recurse for children
+  }
+  return patches;
+};`,
   testCases: [
     { input: [{}, {}], output: [] } // Simplified
   ],

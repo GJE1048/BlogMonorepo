@@ -26,6 +26,13 @@ unique([1, 2, 2, 3]); // [1, 2, 3]
 var unique = function(arr) {
   
 };`,
+  solutionCode: `/**
+ * @param {any[]} arr
+ * @return {any[]}
+ */
+var unique = function(arr) {
+  return Array.from(new Set(arr));
+};`,
   testCases: [
     { input: [[1, 2, 2, 3]], output: [1, 2, 3] },
     { input: [[1, 1, 1]], output: [1] }

@@ -25,6 +25,12 @@ function getPipelineOrder() {
   // Return stages in order
   return [];
 }`,
+  solutionCode: `/**
+ * @return {string[]}
+ */
+function getPipelineOrder() {
+  return ['Lint', 'Test', 'Build', 'Deploy', 'Monitor'];
+}`,
   testCases: [],
   hints: [
     "Lint/Test first.",

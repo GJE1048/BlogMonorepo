@@ -25,6 +25,15 @@ function chooseRepoStrategy(benefit) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {string} benefit
+ * @return {'Monorepo' | 'Polyrepo'}
+ */
+function chooseRepoStrategy(benefit) {
+  if (benefit.includes('Code sharing')) return 'Monorepo';
+  if (benefit.includes('Access control')) return 'Polyrepo';
+  return 'Monorepo';
+}`,
   testCases: [],
   hints: [
     "Code sharing -> Monorepo",

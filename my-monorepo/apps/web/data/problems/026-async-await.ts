@@ -33,6 +33,31 @@ function run(genFn) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {GeneratorFunction} genFn
+ * @return {Promise}
+ */
+function run(genFn) {
+  return new Promise((resolve, reject) => {
+    const gen = genFn();
+    function step(nextF) {
+      let next;
+      try {
+        next = nextF();
+      } catch (e) {
+        return reject(e);
+      }
+      if (next.done) {
+        return resolve(next.value);
+      }
+      Promise.resolve(next.value).then(
+        (v) => step(() => gen.next(v)),
+        (e) => step(() => gen.throw(e))
+      );
+    }
+    step(() => gen.next());
+  });
+}`,
   testCases: [
     { input: [], output: 3 }
   ],

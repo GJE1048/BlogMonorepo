@@ -26,6 +26,21 @@ lazyLoad(images);
 var lazyLoad = function(images) {
   
 };`,
+  solutionCode: `/**
+ * @param {NodeList} images
+ */
+var lazyLoad = function(images) {
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        observer.unobserve(img);
+      }
+    });
+  });
+  images.forEach(img => observer.observe(img));
+};`,
   testCases: [
     { input: [], output: 'lazy-loaded' } // Simplified
   ],

@@ -29,6 +29,24 @@ delegate(list, 'click', 'li', (e) => console.log(e.target));
 var delegate = function(element, eventType, selector, handler) {
   
 };`,
+  solutionCode: `/**
+ * @param {HTMLElement} element
+ * @param {string} eventType
+ * @param {string} selector
+ * @param {Function} handler
+ */
+var delegate = function(element, eventType, selector, handler) {
+  element.addEventListener(eventType, function(e) {
+    let target = e.target;
+    while (target && target !== element) {
+      if (target.matches(selector)) {
+        handler.call(target, e);
+        break;
+      }
+      target = target.parentNode;
+    }
+  });
+};`,
   testCases: [
     { input: [], output: 'delegated' } // Simplified
   ],

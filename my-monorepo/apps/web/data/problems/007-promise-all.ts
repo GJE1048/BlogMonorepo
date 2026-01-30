@@ -35,6 +35,32 @@ myPromiseAll([p1, p2, p3]).then(values => {
 var myPromiseAll = function(promises) {
   
 };`,
+  solutionCode: `/**
+ * @param {Array} promises
+ * @return {Promise}
+ */
+var myPromiseAll = function(promises) {
+  return new Promise((resolve, reject) => {
+    if (!Array.isArray(promises)) {
+      return reject(new TypeError('Argument must be an array'));
+    }
+    const results = [];
+    let completed = 0;
+    if (promises.length === 0) {
+      resolve(results);
+      return;
+    }
+    promises.forEach((p, index) => {
+      Promise.resolve(p).then(value => {
+        results[index] = value;
+        completed++;
+        if (completed === promises.length) {
+          resolve(results);
+        }
+      }).catch(reject);
+    });
+  });
+};`,
   testCases: [
     { input: [[1, 2, 3]], output: [1, 2, 3] } // Simplified
   ],

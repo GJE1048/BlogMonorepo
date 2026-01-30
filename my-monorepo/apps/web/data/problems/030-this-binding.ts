@@ -40,6 +40,18 @@ function fixedGreet() {
   // Return the result of calling greet with correct context
   
 }`,
+  solutionCode: `const person = {
+  name: 'Alice',
+  greet: function() {
+    return 'Hello, ' + this.name;
+  }
+};
+
+const greet = person.greet;
+
+function fixedGreet() {
+  return greet.call(person);
+}`,
   testCases: [
     { input: [], output: 'Hello, Alice' }
   ],

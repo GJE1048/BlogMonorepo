@@ -32,6 +32,20 @@ function myInstanceof(left, right) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {object} left - The object to check
+ * @param {function} right - The constructor
+ * @return {boolean}
+ */
+function myInstanceof(left, right) {
+  if (left === null || typeof left !== 'object') return false;
+  let proto = Object.getPrototypeOf(left);
+  while (proto) {
+    if (proto === right.prototype) return true;
+    proto = Object.getPrototypeOf(proto);
+  }
+  return false;
+}`,
   testCases: [
     { input: ['new Date()', 'Date'], output: true },
     { input: ['[]', 'Array'], output: true },

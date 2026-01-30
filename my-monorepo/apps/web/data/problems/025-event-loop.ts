@@ -35,6 +35,9 @@ Return the output as a string array, e.g., \`['1', '4', '3', '2']\`.
   // Return the array of strings representing the console log order
   return [];
 }`,
+  solutionCode: `function getOutputOrder() {
+  return ['1', '4', '3', '2'];
+}`,
   testCases: [
     { input: [], output: ['1', '4', '3', '2'] }
   ],

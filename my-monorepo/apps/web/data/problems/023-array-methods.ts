@@ -25,6 +25,15 @@ console.log(map1); // [2, 8, 18, 32]
   // Your code here
   
 };`,
+  solutionCode: `Array.prototype.myMap = function(callback, thisArg) {
+  const result = [];
+  for (let i = 0; i < this.length; i++) {
+    if (i in this) {
+      result.push(callback.call(thisArg, this[i], i, this));
+    }
+  }
+  return result;
+};`,
   testCases: [
     { input: [], output: 'new-array' }
   ],

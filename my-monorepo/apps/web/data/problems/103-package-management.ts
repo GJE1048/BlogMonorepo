@@ -26,6 +26,16 @@ function identifyPackageManager(feature) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {string} feature
+ * @return {'npm' | 'yarn' | 'pnpm'}
+ */
+function identifyPackageManager(feature) {
+  if (feature.includes('Symlinks')) return 'pnpm';
+  if (feature.includes('Default')) return 'npm';
+  if (feature.includes('PnP')) return 'yarn';
+  return 'npm';
+}`,
   testCases: [],
   hints: [
     "Symlinks/Hardlinks -> pnpm",

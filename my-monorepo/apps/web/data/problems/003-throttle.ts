@@ -31,6 +31,21 @@ log(); // ignored
 var throttle = function(func, wait) {
   
 };`,
+  solutionCode: `/**
+ * @param {Function} func
+ * @param {number} wait
+ * @return {Function}
+ */
+var throttle = function(func, wait) {
+  let inThrottle;
+  return function(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, wait);
+    }
+  };
+};`,
   testCases: [
      { input: [100], output: 'throttled' }
   ],

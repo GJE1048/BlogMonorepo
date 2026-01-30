@@ -25,6 +25,14 @@ function classifyRule(rule) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {string} rule
+ * @return {'Linting' | 'Formatting'}
+ */
+function classifyRule(rule) {
+  if (rule.includes('Indentation') || rule.includes('Quotes')) return 'Formatting';
+  return 'Linting';
+}`,
   testCases: [],
   hints: [
     "Indentation/Quotes -> Formatting",

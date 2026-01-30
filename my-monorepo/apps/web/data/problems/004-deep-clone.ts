@@ -30,6 +30,23 @@ console.log(obj.b.c); // 2
 var deepClone = function(obj) {
   
 };`,
+  solutionCode: `/**
+ * @param {any} obj
+ * @return {any}
+ */
+var deepClone = function(obj) {
+  if (obj === null || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) {
+    return obj.map(deepClone);
+  }
+  const result = {};
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      result[key] = deepClone(obj[key]);
+    }
+  }
+  return result;
+};`,
   testCases: [
     { input: [{ a: 1, b: { c: 2 } }], output: { a: 1, b: { c: 2 } } },
     { input: [[1, [2, 3]]], output: [1, [2, 3]] }

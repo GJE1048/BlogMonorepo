@@ -28,6 +28,16 @@ function chooseBranch(scenario) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {string} scenario
+ * @return {'feature' | 'hotfix' | 'release' | 'develop'}
+ */
+function chooseBranch(scenario) {
+  if (scenario.includes('New functionality')) return 'feature';
+  if (scenario.includes('Production bug')) return 'hotfix';
+  if (scenario.includes('Preparing v1.0')) return 'release';
+  return 'develop';
+}`,
   testCases: [],
   hints: [
     "New functionality -> feature",

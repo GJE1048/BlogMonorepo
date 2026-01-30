@@ -31,6 +31,18 @@ log();
 var debounce = function(func, wait) {
   
 };`,
+  solutionCode: `/**
+ * @param {Function} func
+ * @param {number} wait
+ * @return {Function}
+ */
+var debounce = function(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+};`,
   testCases: [
     { input: [100], output: 'debounced' } // Simplified test case representation, actual runner logic handles async
   ],

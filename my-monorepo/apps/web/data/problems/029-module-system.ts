@@ -37,6 +37,26 @@ function require(path) {
   // Your implementation
   
 }`,
+  solutionCode: `const modules = {
+  // Define your modules here for testing
+};
+
+const cache = {};
+
+function require(path) {
+  if (cache[path]) return cache[path].exports;
+  
+  const module = { exports: {} };
+  const factory = modules[path];
+  
+  if (!factory) {
+    throw new Error('Module not found: ' + path);
+  }
+  
+  factory(module, module.exports, require);
+  cache[path] = module;
+  return module.exports;
+}`,
   testCases: [
     { input: [], output: 3 }
   ],

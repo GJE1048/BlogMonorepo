@@ -39,6 +39,16 @@ function myNew(constructor, ...args) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {function} constructor
+ * @param {...any} args
+ * @return {object}
+ */
+function myNew(constructor, ...args) {
+  const obj = Object.create(constructor.prototype);
+  const result = constructor.apply(obj, args);
+  return (typeof result === 'object' && result !== null) ? result : obj;
+}`,
   testCases: [
     { input: [], output: 'object' }
   ],

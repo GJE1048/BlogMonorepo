@@ -33,6 +33,16 @@ function Readonly(target, propertyKey, descriptor) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {object} target
+ * @param {string} propertyKey
+ * @param {object} descriptor
+ * @return {object}
+ */
+function Readonly(target, propertyKey, descriptor) {
+  descriptor.writable = false;
+  return descriptor;
+}`,
   testCases: [
     {
       input: [{}, 'method', { value: 'fn_placeholder', writable: true }],

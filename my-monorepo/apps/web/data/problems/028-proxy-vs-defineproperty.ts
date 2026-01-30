@@ -28,6 +28,19 @@ console.log(observed.name); // logs: get name
   // Your code here
   
 }`,
+  solutionCode: `function createObserver(target) {
+  return new Proxy(target, {
+    get(target, key) {
+      console.log('get ' + key);
+      return target[key];
+    },
+    set(target, key, value) {
+      console.log('set ' + key + ' to ' + value);
+      target[key] = value;
+      return true;
+    }
+  });
+}`,
   testCases: [
     { input: [], output: 'observed-object' }
   ],

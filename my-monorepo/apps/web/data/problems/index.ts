@@ -108,6 +108,16 @@ import { vitePrincipleProblem } from './107-vite-principle';
 import { babelPrincipleProblem } from './108-babel-principle';
 import { microFrontendProblem } from './109-micro-frontend';
 import { componentLibraryProblem } from './110-component-library';
+import { tsBasicsProblem } from './111-ts-basics';
+import { tsGenericsProblem } from './112-ts-generics';
+import { tsDecoratorsProblem } from './113-ts-decorators';
+import { tsTypeGuardsProblem } from './114-ts-type-guards';
+import { tsUtilityTypesProblem } from './115-ts-utility-types';
+import { nodeEventLoopProblem } from './116-node-event-loop';
+import { koaMiddlewareProblem } from './117-koa-middleware';
+import { simpleEventEmitterProblem } from './118-event-emitter';
+import { pathNormalizationProblem } from './119-path-normalization';
+import { urlQueryParserProblem } from './120-url-query-parser';
 import type { Problem } from '../../types/problem';
 
 export const problems: Problem[] = [
@@ -221,6 +231,16 @@ export const problems: Problem[] = [
   babelPrincipleProblem,
   microFrontendProblem,
   componentLibraryProblem,
+  tsBasicsProblem,
+  tsGenericsProblem,
+  tsDecoratorsProblem,
+  tsTypeGuardsProblem,
+  tsUtilityTypesProblem,
+  nodeEventLoopProblem,
+  koaMiddlewareProblem,
+  simpleEventEmitterProblem,
+  pathNormalizationProblem,
+  urlQueryParserProblem,
 ];
 
 export function getProblemBySlug(slug: string): Problem | undefined {

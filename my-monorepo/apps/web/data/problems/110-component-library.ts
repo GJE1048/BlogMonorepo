@@ -33,6 +33,17 @@ function renderButton(props) {
   // Your code here
   
 }`,
+  solutionCode: `/**
+ * @param {object} props
+ * @param {string} [props.type='primary']
+ * @param {string} [props.size='medium']
+ * @param {string} props.children
+ * @return {string}
+ */
+function renderButton(props) {
+  const { type = 'primary', size = 'medium', children } = props;
+  return \`<button class="btn btn-\${type} btn-\${size}">\${children}</button>\`;
+}`,
   testCases: [
     {
       input: [{ children: 'Submit' }],

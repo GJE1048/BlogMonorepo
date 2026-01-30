@@ -35,6 +35,11 @@ const getInfo = (p) => {
   var age = p.age;
   return 'Name: ' + name + ', Age: ' + age;
 };`,
+  solutionCode: `const person = { name: 'John', age: 30 };
+const getInfo = (p) => {
+  const { name, age } = p;
+  return \`Name: \${name}, Age: \${age}\`;
+};`,
   testCases: [
     { input: [], output: 'string' }
   ],

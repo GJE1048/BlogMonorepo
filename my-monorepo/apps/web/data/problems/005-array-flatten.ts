@@ -27,6 +27,17 @@ flatten([1, [2, [3, 4]]]); // [1, 2, 3, 4]
 var flatten = function(arr, depth = 1) {
   
 };`,
+  solutionCode: `/**
+ * @param {any[]} arr
+ * @param {number} depth
+ * @return {any[]}
+ */
+var flatten = function(arr, depth = 1) {
+  if (depth === 0) return arr;
+  return arr.reduce((acc, val) => {
+    return acc.concat(Array.isArray(val) ? flatten(val, depth - 1) : val);
+  }, []);
+};`,
   testCases: [
     { input: [[1, [2, [3, 4]]], Infinity], output: [1, 2, 3, 4] },
     { input: [[1, [2, [3, 4]]], 1], output: [1, 2, [3, 4]] }

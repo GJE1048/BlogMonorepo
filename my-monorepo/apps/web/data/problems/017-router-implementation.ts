@@ -35,6 +35,28 @@ router.push('/home'); // triggers callback
     
   }
 }`,
+  solutionCode: `class Router {
+  constructor() {
+    this.routes = {};
+    window.addEventListener('hashchange', this.refresh.bind(this));
+    window.addEventListener('load', this.refresh.bind(this));
+  }
+
+  route(path, callback) {
+    this.routes[path] = callback;
+  }
+
+  push(path) {
+    location.hash = path;
+  }
+  
+  refresh() {
+    const currentUrl = location.hash.slice(1) || '/';
+    if (this.routes[currentUrl]) {
+      this.routes[currentUrl]();
+    }
+  }
+}`,
   testCases: [
     { input: ['/home'], output: 'home' } // Simplified
   ],
