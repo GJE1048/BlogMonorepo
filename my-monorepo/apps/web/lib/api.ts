@@ -8,6 +8,11 @@ const normalizeApiBase = () => {
     return '/api';
   }
   
+  const devHost = (process.env.NEXT_DEV_SERVER || '').trim();
+  if (devHost) {
+    return `${devHost.replace(/\/$/, '')}/api`;
+  }
+  
   if (process.env.NODE_ENV === 'development') {
     return 'https://www.040619.xyz/api';
   }
@@ -66,4 +71,22 @@ export async function createComment(postId: string, payload: { author: string; c
   });
   if (!res.ok) throw new Error('Failed to create comment');
   return (await res.json()) as Comment;
+}
+
+export async function ensureEgeneruiPost(): Promise<{ id: number }> {
+  const res = await fetch(`${apiBase}/posts/ensure-egenerui`);
+  if (!res.ok) throw new Error('Failed to ensure Egenerui post');
+  return (await res.json()) as { id: number };
+}
+
+export async function ensureEgeneruiPost20(): Promise<{ id: number }> {
+  const res = await fetch(`${apiBase}/posts/ensure-egenerui-20`);
+  if (!res.ok) throw new Error('Failed to ensure Egenerui post (id=20)');
+  return (await res.json()) as { id: number };
+}
+
+export async function ensureCoNotionPost21(): Promise<{ id: number }> {
+  const res = await fetch(`${apiBase}/posts/ensure-co-notion-21`);
+  if (!res.ok) throw new Error('Failed to ensure Co-Notion post (id=21)');
+  return (await res.json()) as { id: number };
 }
