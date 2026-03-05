@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS posts (
   published_at DATE,
   reading_time TEXT,
   cover_color TEXT,
+  view_count INTEGER DEFAULT 0,
   author_name TEXT,
   author_title TEXT,
   author_bio TEXT,

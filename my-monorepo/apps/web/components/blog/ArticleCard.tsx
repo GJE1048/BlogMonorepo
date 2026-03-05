@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Code2, MessageSquare } from 'lucide-react';
+import { Code2, Eye, MessageSquare } from 'lucide-react';
 
 interface ArticleCardProps {
   title: string;
@@ -10,6 +10,7 @@ interface ArticleCardProps {
   isCodeArticle?: boolean;
   href: string;
   commentCount?: number;
+  viewCount?: number;
 }
 
 export function ArticleCard({
@@ -21,6 +22,7 @@ export function ArticleCard({
   isCodeArticle = false,
   href,
   commentCount = 0,
+  viewCount = 0,
 }: ArticleCardProps) {
   const isTech = isCodeArticle || tags.some(tag => ['typescript', 'react', 'next.js', 'node.js', 'rust', 'python'].includes(tag.toLowerCase()));
   
@@ -76,6 +78,11 @@ export function ArticleCard({
           <time dateTime={date}>{date}</time>
           <span className="mx-2">•</span>
           <span>{readingTime}</span>
+          <span className="mx-2">•</span>
+          <span className="flex items-center">
+            <Eye size={12} className="mr-1" />
+            {viewCount.toLocaleString()}
+          </span>
           
           {isTech && (
              <>

@@ -62,16 +62,17 @@ export default function Home({ posts, author }: { posts: PostSummary[]; author: 
                 key={post.id} 
                 className="h-full"
               >
-                <ArticleCard 
-                  title={post.title}
-                  excerpt={post.excerpt}
-                  date={new Date(post.publishedAt).toISOString().split('T')[0]}
-                  readingTime={post.readingTime}
-                  tags={post.tags}
-                  href={`/posts/${post.id}`}
-                  commentCount={post.commentCount}
-                />
-              </div>
+                  <ArticleCard 
+                    title={post.title}
+                    excerpt={post.excerpt}
+                    date={new Date(post.publishedAt).toISOString().split('T')[0]}
+                    readingTime={post.readingTime}
+                    tags={post.tags}
+                    href={`/posts/${post.id}`}
+                    commentCount={post.commentCount}
+                    viewCount={post.viewCount}
+                  />
+                </div>
             ))}
           </div>
         </section>

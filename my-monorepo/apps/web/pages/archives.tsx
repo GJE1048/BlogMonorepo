@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { Layout } from '../components/Layout';
 import { ArticleCard } from '../components/blog/ArticleCard';
-import { fetchPosts, fetchTags } from '../lib/api';
+import { fetchAuthor, fetchPosts, fetchTags } from '../lib/api';
 import type { Author, PostSummary } from '../lib/types';
 import { Sidebar } from '../components/Sidebar';
 import { cn } from '../lib/cn';
@@ -72,6 +72,7 @@ export default function Archives({ posts, tags, author, currentLabel }: Archives
                     tags={post.tags}
                     href={`/posts/${post.id}`}
                     commentCount={post.commentCount}
+                    viewCount={post.viewCount}
                   />
                 </div>
               ))}
@@ -94,15 +95,7 @@ export async function getServerSideProps(context: { query: { label?: string } })
   try {
     const [posts, author, tags] = await Promise.all([
       fetchPosts(label),
-      // 复用首页作者 ID 为 1
-      Promise.resolve<Author>({
-        name: '知夏',
-        title: '内容与产品',
-        avatarUrl: '',
-        bio: '结构化表达与长期复用。',
-        stats: { posts: 0, followers: 0, readingHours: 0, weeklyCompletion: 0 },
-        links: [],
-      }),
+      fetchAuthor('1'),
       fetchTags(),
     ]);
     return { props: { posts, author, tags, currentLabel: label ?? null } };
