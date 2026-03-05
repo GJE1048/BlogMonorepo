@@ -1,27 +1,28 @@
 import type { Author, Comment, PostDetail, PostSummary } from './types';
 
 const normalizeApiBase = () => {
-  // 1. 优先使用环境变量 (Vercel 后台配置 NEXT_PUBLIC_API_URL)
   const envUrl = (process.env.NEXT_PUBLIC_API_URL || '').trim();
   if (envUrl) return envUrl.replace(/\/$/, '');
-
-  // 2. 开发环境：默认使用线上自定义域名 API，确保本地页面展示真实数据
-  if (process.env.NODE_ENV === 'development') {
-    return 'https://www.040619.xyz/api';
-  }
-
-  // 3. 浏览器环境：使用相对路径（自动适配当前域名）
+  
   if (typeof window !== 'undefined') {
     return '/api';
   }
-
-  // 4. Vercel 服务端环境 (SSR)
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    return `https://${process.env.NEXT_PUBLIC_API_URL}/api`;
+  
+  if (process.env.NODE_ENV === 'development') {
+    return 'https://www.040619.xyz/api';
   }
   
-  // 5. 本地开发环境 (SSR)
-  return 'http://localhost:3000/api';
+  const vercelUrl = (process.env.VERCEL_URL || '').trim();
+  if (vercelUrl) {
+    return `https://${vercelUrl}/api`;
+  }
+  
+  const nextPublicUrl = (process.env.NEXT_PUBLIC_API_URL || '').trim();
+  if (nextPublicUrl) {
+    return `https://${nextPublicUrl.replace(/\/$/, '')}/api`;
+  }
+  
+  return '/api';
 };
 
 const apiBase = normalizeApiBase();

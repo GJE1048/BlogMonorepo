@@ -11,7 +11,6 @@ import { usePracticeStore } from '../../store/practiceStore';
 import { MarkdownRenderer } from '../../components/MarkdownRenderer';
 import { cn } from '../../lib/cn';
 import { Button } from '../../components/ui/Button';
-import { SandpackPreviewPanel } from '../../components/practice/SandpackPreviewPanel';
 import { fetchAuthor } from '../../lib/api';
 import type { Author } from '../../lib/types';
 
