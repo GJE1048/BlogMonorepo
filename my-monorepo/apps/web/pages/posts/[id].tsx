@@ -109,6 +109,50 @@ export async function getServerSideProps(context: { params?: { id?: string } }) 
     const comments = await fetchComments(id);
     return { props: { post, comments } };
   } catch (_err) {
+    if (id === '20') {
+      const post = {
+        id: '20',
+        title: 'Egenerui：用声明式代码构建高效工具界面的新选择',
+        excerpt: '用声明式代码构建高效工具界面的新选择。',
+        tags: ['Frontend', 'UI', 'Tool', 'Egenerui'],
+        publishedAt: new Date().toISOString().slice(0, 10),
+        readingTime: '8 分钟阅读',
+        coverColor: 'bg-pink-600',
+        author: {
+          name: 'GJE',
+          title: '内容与产品',
+          bio: '结构化表达与长期复用。',
+          stats: { posts: 0, followers: 0, readingHours: 0, weeklyCompletion: 0 },
+          links: [{ label: 'GitHub', href: 'https://github.com/GJE1048/egenerui' }],
+        },
+        commentCount: 0,
+        content:
+          'Egenerui：用声明式代码构建高效工具界面的新选择\n\n更多信息：\n- 文档（Textbox）：https://gje1048.github.io/egenerui/components/input/textbox.html\n- npm 包：https://www.npmjs.com/package/egenerui\n- GitHub 仓库：https://github.com/GJE1048/egenerui\n',
+      };
+      return { props: { post, comments: [] } };
+    }
+    if (id === '21') {
+      const post = {
+        id: '21',
+        title: 'Co-Notion：下一代 AI 驱动的多人协同文档平台',
+        excerpt: 'AI 驱动的多人协同文档平台，融合实时协作与智能辅助。',
+        tags: ['Collaboration', 'AI', 'Realtime', 'Yjs'],
+        publishedAt: new Date().toISOString().slice(0, 10),
+        readingTime: '10 分钟阅读',
+        coverColor: 'bg-cyan-600',
+        author: {
+          name: 'GJE',
+          title: '内容与产品',
+          bio: '结构化表达与长期复用。',
+          stats: { posts: 0, followers: 0, readingHours: 0, weeklyCompletion: 0 },
+          links: [{ label: 'GitHub', href: 'https://github.com/GJE1048/co-notion' }],
+        },
+        commentCount: 0,
+        content:
+          'Co-Notion：下一代 AI 驱动的多人协同文档平台\n\nGitHub 仓库：https://github.com/GJE1048/co-notion\n',
+      };
+      return { props: { post, comments: [] } };
+    }
     return { notFound: true };
   }
 }

@@ -4,8 +4,9 @@ import Head from 'next/head';
 import { NavBar } from '../components/NavBar';
 import { Github, Twitter, Mail, ExternalLink, Code2, Layers, Cpu, Database, Palette } from 'lucide-react';
 import { cn } from '../lib/cn';
+import { ensureEgeneruiPost20, ensureCoNotionPost21 } from '../lib/api';
 
-export default function Portfolio() {
+export default function Portfolio({ egeneruiId }: { egeneruiId?: number }) {
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] font-sans selection:bg-[var(--color-accent-soft)] selection:text-[var(--color-accent)]">
       <Head>
@@ -40,9 +41,10 @@ export default function Portfolio() {
             </p>
 
             <div className="flex gap-4 mt-4">
-              <SocialButton href="https://github.com" icon={<Github size={20} />} label="GitHub" />
-              <SocialButton href="https://twitter.com" icon={<Twitter size={20} />} label="Twitter" />
-              <SocialButton href="mailto:hello@example.com" icon={<Mail size={20} />} label="Email" />
+              <SocialButton href="https://gitee.com/guojiaen" icon={<Code2 size={20} />} label="Gitee" />
+              <SocialButton href="https://github.com/GJE1048" icon={<Github size={20} />} label="GitHub" />
+              {/* <SocialButton href="https://twitter.com/GJE1048" icon={<Twitter size={20} />} label="Twitter" /> */}
+              {/* <SocialButton href="mailto:hello@example.com" icon={<Mail size={20} />} label="Email" /> */}
             </div>
           </section>
 
@@ -55,8 +57,8 @@ export default function Portfolio() {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <TechCard icon={<Code2 />} title="Frontend" items={['React', 'Next.js', 'TypeScript', 'Tailwind CSS']} color="text-blue-500" bg="bg-blue-500/10" />
-              <TechCard icon={<Cpu />} title="Backend" items={['Node.js', 'Rust', 'PostgreSQL', 'GraphQL']} color="text-orange-500" bg="bg-orange-500/10" />
-              <TechCard icon={<Palette />} title="Design" items={['Figma', 'UI/UX', 'Design Systems', 'Motion']} color="text-purple-500" bg="bg-purple-500/10" />
+              <TechCard icon={<Cpu />} title="Backend" items={['Node.js', 'PostgreSQL']} color="text-orange-500" bg="bg-orange-500/10" />
+              {/* <TechCard icon={<Palette />} title="Design" items={['Figma', 'UI/UX', 'Design Systems', 'Motion']} color="text-purple-500" bg="bg-purple-500/10" /> */}
               <TechCard icon={<Layers />} title="DevOps" items={['Docker', 'CI/CD', 'Vercel', 'AWS']} color="text-green-500" bg="bg-green-500/10" />
             </div>
           </section>
@@ -70,33 +72,33 @@ export default function Portfolio() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <ProjectCard 
-                title="My Monorepo"
+                title="egenerui"
                 description="A high-performance monorepo setup featuring Next.js 14, TurboRepo, and a shared UI library. Designed for scalability and developer experience."
                 tags={['Next.js', 'TurboRepo', 'TypeScript']}
                 gradient="from-pink-500 to-rose-500"
-                link="#"
+                link={`/posts/20`}
               />
               <ProjectCard 
-                title="Neon CMS"
-                description="A modern content management system built with Neon DB (Serverless Postgres) and Drizzle ORM. Features real-time collaboration and AI-assisted editing."
-                tags={['PostgreSQL', 'Drizzle', 'AI']}
+                title="Co-Notion"
+                description="AI 驱动的多人协同文档平台，融合实时协作与智能辅助。"
+                tags={['Next.js', 'tRPC', 'Yjs', 'AI']}
                 gradient="from-cyan-500 to-blue-500"
-                link="#"
+                link="/posts/21"
               />
-              <ProjectCard 
+              {/* <ProjectCard 
                 title="Rust Async Runtime"
                 description="An educational implementation of a Rust async runtime. Demonstrates the core concepts of Futures, Tasks, and Executors."
                 tags={['Rust', 'Systems', 'Concurrency']}
                 gradient="from-orange-500 to-amber-500"
                 link="#"
-              />
-              <ProjectCard 
+              /> */}
+              {/* <ProjectCard 
                 title="Design System 2.0"
                 description="A comprehensive React component library implementing accessible, composable, and themeable UI primitives based on Radix UI."
                 tags={['React', 'Radix UI', 'Storybook']}
                 gradient="from-violet-500 to-purple-500"
                 link="#"
-              />
+              /> */}
             </div>
           </section>
 
@@ -110,6 +112,16 @@ export default function Portfolio() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  try {
+    await ensureEgeneruiPost20();
+    await ensureCoNotionPost21();
+    return { props: { egeneruiId: 20 } };
+  } catch (_err) {
+    return { props: {} };
+  }
 }
 
 function SocialButton({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {

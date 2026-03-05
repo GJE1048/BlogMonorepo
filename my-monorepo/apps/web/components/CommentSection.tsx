@@ -46,10 +46,10 @@ export function CommentSection({
 
   return (
     <section className={cn(
-      "flex flex-col gap-8 mx-auto pb-20 px-4 sm:px-6 lg:px-8",
-      isCodeArticle ? "max-w-4xl" : "max-w-3xl"
+      "prose-container flex flex-col gap-8 pb-20 w-full",
+      isCodeArticle ? "code-article" : ""
     )}>
-      <div className="flex items-end justify-between">
+      <div className="flex items-end justify-between ">
         <div className="flex flex-col gap-1">
           <h3 className="text-xl font-bold text-[var(--color-text)] flex items-center gap-2">
             评论区
@@ -113,7 +113,7 @@ export function CommentSection({
       <div className="flex flex-col gap-8">
         {comments.length === 0 ? (
           <div className="py-16 text-center flex flex-col items-center gap-2 text-[var(--color-muted)] bg-[var(--color-surface-2)]/50 rounded-2xl border border-[var(--color-border)] border-dashed">
-             <div className="text-4xl mb-2">💬</div>
+             <div className="text-4xl mb-2"></div>
              <p className="font-medium">还没有评论</p>
              <p className="text-xs opacity-70">成为第一个发言的人吧</p>
           </div>
