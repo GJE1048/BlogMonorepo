@@ -43,7 +43,7 @@ export function Sidebar({ author, className }: { author: Author; className?: str
           </div>
           <div className="flex flex-col items-center gap-1">
             <span className="text-lg font-bold text-[var(--color-text)]">{(author.stats.readingHours || 0).toLocaleString()}</span>
-            <span className="text-xs font-medium text-[var(--color-muted)] uppercase tracking-wider">阅读</span>
+            <span className="text-xs font-medium text-[var(--color-muted)] uppercase tracking-wider">阅读人次</span>
           </div>
         </div>
 

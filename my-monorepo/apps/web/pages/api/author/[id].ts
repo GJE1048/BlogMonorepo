@@ -17,7 +17,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const rows = await query<any>(
-      `SELECT * FROM authors WHERE id = $1`,
+      `
+      SELECT
+        a.*,
+        COALESCE(stats.post_count, 0) AS post_count,
+        COALESCE(stats.total_reads, 0) AS total_reads
+      FROM authors a
+      LEFT JOIN (
+        SELECT author_id,
+               COUNT(*)::int AS post_count,
+               COALESCE(SUM(view_count), 0)::int AS total_reads
+        FROM posts
+        GROUP BY author_id
+      ) stats ON stats.author_id = a.id
+      WHERE a.id = $1
+      `,
       [id]
     );
 
@@ -34,9 +48,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       bio: author.bio,
       avatarUrl: author.avatar_url,
       stats: {
-        posts: author.article_count,
+        posts: author.post_count ?? author.article_count ?? 0,
         followers: author.follower_count,
-        readingHours: author.total_reads, 
+        readingHours: author.total_reads ?? 0, 
         weeklyCompletion: author.weekly_completion_rate,
       },
       links: author.social_links || [],

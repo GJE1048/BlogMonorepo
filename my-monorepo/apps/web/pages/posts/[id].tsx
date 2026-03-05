@@ -118,6 +118,7 @@ export async function getServerSideProps(context: { params?: { id?: string } }) 
         publishedAt: new Date().toISOString().slice(0, 10),
         readingTime: '8 分钟阅读',
         coverColor: 'bg-pink-600',
+        viewCount: 0,
         author: {
           name: 'GJE',
           title: '内容与产品',
@@ -140,6 +141,7 @@ export async function getServerSideProps(context: { params?: { id?: string } }) 
         publishedAt: new Date().toISOString().slice(0, 10),
         readingTime: '10 分钟阅读',
         coverColor: 'bg-cyan-600',
+        viewCount: 0,
         author: {
           name: 'GJE',
           title: '内容与产品',

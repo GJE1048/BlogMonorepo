@@ -23,6 +23,7 @@ export type PostSummary = {
   publishedAt: string;
   readingTime: string;
   coverColor: string;
+  viewCount: number;
   author: Author;
   commentCount: number;
 };

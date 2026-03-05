@@ -31,6 +31,7 @@ const mapRowToPost = (row: any, commentCount = 0) => ({
   publishedAt: row.published_at,
   readingTime: row.reading_time,
   coverColor: row.cover_color,
+  viewCount: Number(row.view_count ?? 0),
   author: {
     name: row.author_name ?? 'Unknown',
     title: row.author_title ?? '',
@@ -63,12 +64,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const selectClause = `
       SELECT p.*, COUNT(c.id) AS comment_count,
              a.name as author_name, a.title as author_title, a.bio as author_bio, 
-             a.avatar_url as author_avatar_url, a.article_count as author_article_count,
-             a.follower_count as author_follower_count, a.total_reads as author_total_reads,
+             a.avatar_url as author_avatar_url,
+             COALESCE(MAX(author_stats.author_article_count), a.article_count) as author_article_count,
+             a.follower_count as author_follower_count,
+             COALESCE(MAX(author_stats.author_total_reads), a.total_reads) as author_total_reads,
              a.weekly_completion_rate as author_weekly_completion_rate, a.social_links as author_social_links
       FROM posts p
       LEFT JOIN comments c ON c.post_id = p.id
       LEFT JOIN authors a ON p.author_id = a.id
+      LEFT JOIN (
+        SELECT author_id,
+               COUNT(*)::int AS author_article_count,
+               COALESCE(SUM(view_count), 0)::int AS author_total_reads
+        FROM posts
+        GROUP BY author_id
+      ) author_stats ON author_stats.author_id = a.id
     `;
 
     if (tagsFilter.length > 0) {
