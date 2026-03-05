@@ -61,8 +61,8 @@ async function runMiddlewares(middlewares) {
     {
       input: [
         [
-          async (ctx, next) => { ctx.logs.push('1'); await next(); ctx.logs.push('4'); },
-          async (ctx, next) => { ctx.logs.push('2'); await next(); ctx.logs.push('3'); }
+          async (ctx: { logs: string[] }, next: () => Promise<void>) => { ctx.logs.push('1'); await next(); ctx.logs.push('4'); },
+          async (ctx: { logs: string[] }, next: () => Promise<void>) => { ctx.logs.push('2'); await next(); ctx.logs.push('3'); }
         ]
       ],
       output: ['1', '2', '3', '4'],

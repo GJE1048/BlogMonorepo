@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { Layout } from '../components/Layout';
 import { ArticleCard } from '../components/blog/ArticleCard';
 import { fetchPosts, fetchTags } from '../lib/api';
@@ -29,7 +30,7 @@ export default function Archives({ posts, tags, author, currentLabel }: Archives
               <span className="text-sm text-[var(--color-muted)]">共 {posts.length} 篇</span>
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a
+              <Link
                 href="/archives"
                 className={cn(
                   "px-3 py-1.5 rounded-lg text-sm border transition-colors",
@@ -39,9 +40,9 @@ export default function Archives({ posts, tags, author, currentLabel }: Archives
                 )}
               >
                 全部
-              </a>
+              </Link>
               {tags.map((t) => (
-                <a
+                <Link
                   key={t.id}
                   href={`/archives?label=${encodeURIComponent(t.name)}`}
                   className={cn(
@@ -52,7 +53,7 @@ export default function Archives({ posts, tags, author, currentLabel }: Archives
                   )}
                 >
                   {t.name}
-                </a>
+                </Link>
               ))}
             </div>
           </section>
