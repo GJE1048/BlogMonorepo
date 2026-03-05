@@ -1,5 +1,6 @@
 import React from 'react';
-import Editor, { OnMount } from '@monaco-editor/react';
+import dynamic from 'next/dynamic';
+import type { OnMount } from '@monaco-editor/react';
 import { useTheme } from '../../lib/theme';
 import { Loader2 } from 'lucide-react';
 
@@ -9,6 +10,16 @@ interface CodeEditorProps {
   language?: string;
   readOnly?: boolean;
 }
+
+const Editor = dynamic(() => import('@monaco-editor/react'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-full text-muted-foreground">
+      <Loader2 className="animate-spin mr-2" />
+      Loading Editor...
+    </div>
+  ),
+});
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({ 
   value, 
@@ -49,12 +60,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           automaticLayout: true,
           padding: { top: 16, bottom: 16 },
         }}
-        loading={
-          <div className="flex items-center justify-center h-full text-muted-foreground">
-            <Loader2 className="animate-spin mr-2" />
-            Loading Editor...
-          </div>
-        }
       />
     </div>
   );
