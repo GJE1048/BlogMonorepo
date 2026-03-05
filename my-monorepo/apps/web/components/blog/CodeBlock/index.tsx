@@ -1,39 +1,77 @@
 'use client';
 
-import { useState } from 'react';
-import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
-import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
-import javascript from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
-import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
-import json from 'react-syntax-highlighter/dist/cjs/languages/prism/json';
-import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
-import markdown from 'react-syntax-highlighter/dist/cjs/languages/prism/markdown';
-import sql from 'react-syntax-highlighter/dist/cjs/languages/prism/sql';
-import python from 'react-syntax-highlighter/dist/cjs/languages/prism/python';
-import rust from 'react-syntax-highlighter/dist/cjs/languages/prism/rust';
-import go from 'react-syntax-highlighter/dist/cjs/languages/prism/go';
-import diff from 'react-syntax-highlighter/dist/cjs/languages/prism/diff';
+import { useEffect, useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import { cn } from '../../../lib/cn';
 
-// Register languages
-SyntaxHighlighter.registerLanguage('tsx', tsx);
-SyntaxHighlighter.registerLanguage('typescript', typescript);
-SyntaxHighlighter.registerLanguage('ts', typescript);
-SyntaxHighlighter.registerLanguage('javascript', javascript);
-SyntaxHighlighter.registerLanguage('js', javascript);
-SyntaxHighlighter.registerLanguage('css', css);
-SyntaxHighlighter.registerLanguage('json', json);
-SyntaxHighlighter.registerLanguage('bash', bash);
-SyntaxHighlighter.registerLanguage('sh', bash);
-SyntaxHighlighter.registerLanguage('markdown', markdown);
-SyntaxHighlighter.registerLanguage('sql', sql);
-SyntaxHighlighter.registerLanguage('python', python);
-SyntaxHighlighter.registerLanguage('rust', rust);
-SyntaxHighlighter.registerLanguage('go', go);
-SyntaxHighlighter.registerLanguage('diff', diff);
+type SyntaxState = {
+  Highlighter: any;
+  style: any;
+};
+
+let syntaxPromise: Promise<SyntaxState> | null = null;
+
+const loadSyntaxHighlighter = () => {
+  if (!syntaxPromise) {
+    syntaxPromise = (async () => {
+      const [
+        prismLightModule,
+        prismStyles,
+        tsxModule,
+        typescriptModule,
+        javascriptModule,
+        cssModule,
+        jsonModule,
+        bashModule,
+        markdownModule,
+        sqlModule,
+        pythonModule,
+        rustModule,
+        goModule,
+        diffModule,
+      ] = await Promise.all([
+        import('react-syntax-highlighter/dist/esm/prism-light'),
+        import('react-syntax-highlighter/dist/esm/styles/prism'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/tsx'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/typescript'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/javascript'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/css'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/json'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/bash'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/markdown'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/sql'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/python'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/rust'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/go'),
+        import('react-syntax-highlighter/dist/esm/languages/prism/diff'),
+      ]);
+
+      const { PrismLight } = prismLightModule as any;
+
+      PrismLight.registerLanguage('tsx', tsxModule.default ?? tsxModule);
+      PrismLight.registerLanguage('typescript', typescriptModule.default ?? typescriptModule);
+      PrismLight.registerLanguage('ts', typescriptModule.default ?? typescriptModule);
+      PrismLight.registerLanguage('javascript', javascriptModule.default ?? javascriptModule);
+      PrismLight.registerLanguage('js', javascriptModule.default ?? javascriptModule);
+      PrismLight.registerLanguage('css', cssModule.default ?? cssModule);
+      PrismLight.registerLanguage('json', jsonModule.default ?? jsonModule);
+      PrismLight.registerLanguage('bash', bashModule.default ?? bashModule);
+      PrismLight.registerLanguage('sh', bashModule.default ?? bashModule);
+      PrismLight.registerLanguage('markdown', markdownModule.default ?? markdownModule);
+      PrismLight.registerLanguage('sql', sqlModule.default ?? sqlModule);
+      PrismLight.registerLanguage('python', pythonModule.default ?? pythonModule);
+      PrismLight.registerLanguage('rust', rustModule.default ?? rustModule);
+      PrismLight.registerLanguage('go', goModule.default ?? goModule);
+      PrismLight.registerLanguage('diff', diffModule.default ?? diffModule);
+
+      return {
+        Highlighter: PrismLight,
+        style: (prismStyles as any).vscDarkPlus,
+      };
+    })();
+  }
+  return syntaxPromise;
+};
 
 interface CodeBlockProps {
   code: string;
@@ -52,8 +90,23 @@ export function CodeBlock({
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [syntax, setSyntax] = useState<SyntaxState | null>(null);
   const lineCount = code.split('\n').length;
   const shouldCollapse = lineCount > 20;
+
+  useEffect(() => {
+    let mounted = true;
+    loadSyntaxHighlighter()
+      .then((loaded) => {
+        if (mounted) setSyntax(loaded);
+      })
+      .catch((err) => {
+        console.error('Failed to load syntax highlighter', err);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleCopy = async () => {
     try {
@@ -97,43 +150,49 @@ export function CodeBlock({
 
       {/* Code Content */}
       <div className={cn("relative transition-all duration-300", shouldCollapse && !isExpanded ? "max-h-[320px] overflow-hidden" : "")}>
-        <SyntaxHighlighter
-          style={vscDarkPlus}
-          language={language}
-          PreTag="div"
-          showLineNumbers={showLineNumbers}
-          wrapLines={true}
-          lineProps={(lineNumber) => {
-             const isHighlighted = highlightLines.includes(lineNumber);
-             return {
+        {syntax ? (
+          <syntax.Highlighter
+            style={syntax.style}
+            language={language}
+            PreTag="div"
+            showLineNumbers={showLineNumbers}
+            wrapLines={true}
+            lineProps={(lineNumber: number) => {
+              const isHighlighted = highlightLines.includes(lineNumber);
+              return {
                 style: {
-                    display: 'block',
-                    backgroundColor: isHighlighted ? 'rgba(255, 255, 255, 0.1)' : undefined,
-                    borderLeft: isHighlighted ? '3px solid var(--color-accent)' : undefined,
-                    marginLeft: '-1.5rem',
-                    paddingLeft: isHighlighted ? 'calc(1.5rem - 3px)' : '1.5rem',
-                    paddingRight: '1.5rem',
-                    width: 'calc(100% + 3rem)',
-                }
-             };
-          }}
-          customStyle={{
-            margin: 0,
-            padding: '1.5rem',
-            background: 'transparent',
-            fontSize: '14px',
-            lineHeight: '1.6',
-            fontFamily: '"JetBrains Mono", "Fira Code", monospace',
-          }}
-          lineNumberStyle={{
-            minWidth: '2.5em',
-            paddingRight: '1em',
-            color: '#6e7681',
-            textAlign: 'right',
-          }}
-        >
-          {code}
-        </SyntaxHighlighter>
+                  display: 'block',
+                  backgroundColor: isHighlighted ? 'rgba(255, 255, 255, 0.1)' : undefined,
+                  borderLeft: isHighlighted ? '3px solid var(--color-accent)' : undefined,
+                  marginLeft: '-1.5rem',
+                  paddingLeft: isHighlighted ? 'calc(1.5rem - 3px)' : '1.5rem',
+                  paddingRight: '1.5rem',
+                  width: 'calc(100% + 3rem)',
+                },
+              };
+            }}
+            customStyle={{
+              margin: 0,
+              padding: '1.5rem',
+              background: 'transparent',
+              fontSize: '14px',
+              lineHeight: '1.6',
+              fontFamily: '"JetBrains Mono", "Fira Code", monospace',
+            }}
+            lineNumberStyle={{
+              minWidth: '2.5em',
+              paddingRight: '1em',
+              color: '#6e7681',
+              textAlign: 'right',
+            }}
+          >
+            {code}
+          </syntax.Highlighter>
+        ) : (
+          <pre className="m-0 bg-transparent p-6 text-sm leading-relaxed text-[#d4d4d4] font-mono whitespace-pre-wrap">
+            <code>{code}</code>
+          </pre>
+        )}
 
         {shouldCollapse && !isExpanded && (
            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#1e1e1e] to-transparent flex items-end justify-center pb-4 z-10 pointer-events-none">
