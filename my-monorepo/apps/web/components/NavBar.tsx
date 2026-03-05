@@ -14,7 +14,7 @@ export function NavBar() {
     <header className="flex flex-col md:flex-row items-start md:items-center justify-between py-6 md:py-8 gap-4 md:gap-0">
       <div className="flex items-center gap-8 w-full md:w-auto justify-between md:justify-start">
         <Link className="text-xl font-bold tracking-tight text-[var(--color-text)]" href="/">
-          知夏手记
+          Blog-Mono
         </Link>
         <nav className="flex gap-6 text-sm text-[var(--color-muted)]">
           <Link href="/" className="hover:text-[var(--color-text)] transition-colors">首页</Link>
@@ -59,7 +59,7 @@ export function NavBar() {
             <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
             <Dialog.Content className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-2xl">
               <div className="flex flex-col space-y-1.5 text-center sm:text-left">
-                <Dialog.Title className="text-lg font-semibold leading-none tracking-tight text-[var(--color-text)]">订阅知夏手记</Dialog.Title>
+                <Dialog.Title className="text-lg font-semibold leading-none tracking-tight text-[var(--color-text)]">订阅</Dialog.Title>
                 <Dialog.Description className="text-sm text-[var(--color-muted)]">
                   每周精选灵感与案例，发到你的邮箱。
                 </Dialog.Description>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { ArrowLeft, Play, Save, CheckCircle2, RotateCcw, Loader2 } from 'lucide-react';
+import { ArrowLeft, Play, Save, CheckCircle2, RotateCcw, Loader2, History, Trash2 } from 'lucide-react';
 import { Layout } from '../../components/Layout';
 import { getProblemBySlug } from '../../data/problems';
 import { CodeEditor } from '../../components/practice/CodeEditor';
@@ -11,8 +11,14 @@ import { usePracticeStore } from '../../store/practiceStore';
 import { MarkdownRenderer } from '../../components/MarkdownRenderer';
 import { cn } from '../../lib/cn';
 import { Button } from '../../components/ui/Button';
+import { SandpackPreviewPanel } from '../../components/practice/SandpackPreviewPanel';
 import { fetchAuthor } from '../../lib/api';
 import type { Author } from '../../lib/types';
+
+interface HistoryItem {
+  timestamp: number;
+  code: string;
+}
 
 export default function ProblemDetailPage({ author }: { author: Author }) {
   const router = useRouter();
@@ -24,13 +30,36 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
   const [output, setOutput] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [activeTab, setActiveTab] = useState<'description' | 'solution'>('description');
+  const [activeBottomTab, setActiveBottomTab] = useState<'console' | 'preview'>('console');
+  
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+
+  const isFrontend = problem ? (
+    problem.tags.some(t => ['React', 'Vue', 'DOM', 'CSS', 'Frontend'].includes(t)) || 
+    problem.category === 'React' || 
+    problem.category === 'CSS'
+  ) : false;
 
   useEffect(() => {
     if (problem) {
       const saved = getCode(problem.id);
       setCode(saved || problem.templateCode);
+      if (isFrontend) {
+        setActiveBottomTab('preview');
+      }
+      
+      // Load history from localStorage
+      try {
+        const savedHistory = localStorage.getItem(`problem-history-${problem.id}`);
+        if (savedHistory) {
+          setHistory(JSON.parse(savedHistory));
+        }
+      } catch (e) {
+        console.error('Failed to load history', e);
+      }
     }
-  }, [problem, getCode]);
+  }, [problem, getCode, isFrontend]);
 
   if (!problem) {
     return (
@@ -75,6 +104,36 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
 
   const handleSave = () => {
     saveCode(problem.id, code);
+    
+    // Save to history
+    const newItem: HistoryItem = {
+      timestamp: Date.now(),
+      code: code
+    };
+    
+    const newHistory = [newItem, ...history].slice(0, 50); // Keep last 50 entries
+    setHistory(newHistory);
+    localStorage.setItem(`problem-history-${problem.id}`, JSON.stringify(newHistory));
+  };
+
+  const handleRestore = (item: HistoryItem) => {
+    if (confirm('Restore this version? Current code will be overwritten.')) {
+      setCode(item.code);
+      setShowHistory(false);
+    }
+  };
+  
+  const handleClearHistory = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm('Clear all history?')) {
+      setHistory([]);
+      localStorage.removeItem(`problem-history-${problem.id}`);
+    }
+  };
+
+  const formatDate = (ts: number) => {
+    const d = new Date(ts);
+    return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
   };
 
   const handleReset = () => {
@@ -84,7 +143,7 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
   };
 
   return (
-    <Layout author={author}>
+    <Layout author={author} showSidebar={false}>
       <div className="h-[calc(100vh-64px)] flex flex-col">
         {/* Header */}
         <div className="border-b border-border bg-card p-4 flex justify-between items-center">
@@ -100,7 +159,52 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 relative">
+            <div className="relative">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setShowHistory(!showHistory)} 
+                title="History"
+                className={showHistory ? "bg-secondary" : ""}
+              >
+                <History size={16} className="mr-2" /> History
+              </Button>
+              
+              {showHistory && (
+                <div className="absolute top-full right-0 mt-2 w-64 max-h-80 overflow-y-auto bg-card border border-border rounded-md shadow-lg z-50">
+                  <div className="p-2 border-b border-border flex justify-between items-center sticky top-0 bg-card">
+                    <span className="text-xs font-semibold text-muted-foreground">Saved Versions</span>
+                    {history.length > 0 && (
+                      <button 
+                        onClick={handleClearHistory}
+                        className="text-xs text-destructive hover:text-destructive/80 flex items-center"
+                      >
+                        <Trash2 size={12} className="mr-1" /> Clear
+                      </button>
+                    )}
+                  </div>
+                  {history.length === 0 ? (
+                    <div className="p-4 text-center text-xs text-muted-foreground">
+                      No saved history yet
+                    </div>
+                  ) : (
+                    <div className="py-1">
+                      {history.map((item, index) => (
+                        <button
+                          key={item.timestamp}
+                          className="w-full text-left px-4 py-2 text-sm hover:bg-secondary flex justify-between items-center group"
+                          onClick={() => handleRestore(item)}
+                        >
+                          <span>{formatDate(item.timestamp)}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
             <Button variant="ghost" size="sm" onClick={handleReset} title="Reset Code">
               <RotateCcw size={16} />
             </Button>
@@ -158,8 +262,23 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
                   </div>
                 </>
               ) : (
-                <div className="text-muted-foreground">
-                  Solution is not available yet.
+                <div className="space-y-4">
+                  {problem.solutionCode ? (
+                    <div className="rounded-md overflow-hidden border border-border">
+                      <div className="bg-muted px-4 py-2 text-xs font-mono text-muted-foreground border-b border-border">
+                        Solution Reference
+                      </div>
+                      <div className="p-4 bg-[#1e1e1e] overflow-x-auto">
+                        <pre className="text-sm font-mono text-[#d4d4d4]">
+                          <code>{problem.solutionCode}</code>
+                        </pre>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-muted-foreground p-4">
+                      Solution is not available yet.
+                    </div>
+                  )}
                 </div>
               )}
             </div>

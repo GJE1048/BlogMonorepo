@@ -16,7 +16,7 @@ export default function PostDetailPage({ post, comments }: { post: PostDetail; c
   return (
     <>
       <Head>
-        <title>{post.title} · 知夏手记</title>
+        <title>{post.title} · GJE 手记</title>
       </Head>
       <Layout author={author}>
         <article className={cn(

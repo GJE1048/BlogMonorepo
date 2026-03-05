@@ -103,7 +103,7 @@ export default function CodePage() {
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] font-sans">
       <Head>
-        <title>Code Playground | 知夏手记</title>
+        <title>Code Playground | Blog-Mono</title>
         <meta name="description" content="Online Code Editor and Playground" />
       </Head>
 

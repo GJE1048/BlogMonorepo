@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { Layout } from '../components/Layout';
 import { ArticleCard } from '../components/blog/ArticleCard';
 import { fetchAuthor, fetchPosts } from '../lib/api';
@@ -42,7 +43,7 @@ export default function Home({ posts, author }: { posts: PostSummary[]; author: 
   return (
     <>
       <Head>
-        <title>知夏手记 · 博客</title>
+        <title>GJE · 博客</title>
         <meta name="description" content="设计、产品与 AI 的长期记录" />
       </Head>
       <Layout author={author} hero={heroSection}>
@@ -50,9 +51,9 @@ export default function Home({ posts, author }: { posts: PostSummary[]; author: 
         <section className="pb-20 max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-[var(--color-text)]">最新文章</h2>
-            <a href="/archives" className="text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors">
+            <Link href="/archives" className="text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors">
               查看全部 →
-            </a>
+            </Link>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -89,7 +90,7 @@ export async function getServerSideProps(context: { query: { label?: string } })
     return { props: { posts, author } };
   } catch (_err) {
     const fallbackAuthor: Author = {
-      name: '知夏',
+      name: 'GJE',
       title: '内容与产品',
       avatarUrl: '',
       bio: '结构化表达与长期复用。',

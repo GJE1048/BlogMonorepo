@@ -1,6 +1,7 @@
 import * as Avatar from '@radix-ui/react-avatar';
 import * as Progress from '@radix-ui/react-progress';
 import * as Separator from '@radix-ui/react-separator';
+import Link from 'next/link';
 import type { Author } from '../lib/types';
 import { cn } from '../lib/cn';
 
@@ -75,12 +76,12 @@ export function Sidebar({ author, className }: { author: Author; className?: str
           </Progress.Root>
         </div>
 
-        <a 
+        <Link 
           href="/portfolio" 
           className="flex items-center justify-center w-full py-2.5 mt-2 rounded-xl bg-[var(--color-text)] text-[var(--color-bg)] font-bold text-sm transition-all hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]"
         >
           个人空间 <span className="ml-1">→</span>
-        </a>
+        </Link>
 
         <div className="flex flex-wrap justify-center gap-3 pt-2">
           {author.links.map((link) => (

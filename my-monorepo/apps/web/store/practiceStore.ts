@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { UserProgress } from '../types/problem';
 
 interface PracticeState {
@@ -33,6 +33,19 @@ export const usePracticeStore = create<PracticeState>()(
     }),
     {
       name: 'practice-storage',
+      storage: createJSONStorage(() => {
+        if (typeof window !== 'undefined') return localStorage;
+        const memoryStorage: Storage = {
+          length: 0,
+          clear: () => {},
+          getItem: () => null,
+          key: () => null,
+          removeItem: () => {},
+          setItem: () => {},
+        };
+        return memoryStorage;
+      }),
+      skipHydration: true,
     }
   )
 );
