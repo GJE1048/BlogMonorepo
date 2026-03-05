@@ -43,7 +43,7 @@ export default function Home({ posts, author }: { posts: PostSummary[]; author: 
   return (
     <>
       <Head>
-        <title>知夏手记 · 博客</title>
+        <title>GJE · 博客</title>
         <meta name="description" content="设计、产品与 AI 的长期记录" />
       </Head>
       <Layout author={author} hero={heroSection}>
@@ -90,7 +90,7 @@ export async function getServerSideProps(context: { query: { label?: string } })
     return { props: { posts, author } };
   } catch (_err) {
     const fallbackAuthor: Author = {
-      name: '知夏',
+      name: 'GJE',
       title: '内容与产品',
       avatarUrl: '',
       bio: '结构化表达与长期复用。',
