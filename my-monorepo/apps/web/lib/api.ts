@@ -19,12 +19,15 @@ const normalizeApiBase = () => {
   
   const vercelUrl = (process.env.VERCEL_URL || '').trim();
   if (vercelUrl) {
-    return `https://${vercelUrl}/api`;
+    // Vercel deployment URL
+    const protocol = vercelUrl.includes('localhost') ? 'http' : 'https';
+    return `${protocol}://${vercelUrl}/api`;
   }
   
   const nextPublicUrl = (process.env.NEXT_PUBLIC_API_URL || '').trim();
   if (nextPublicUrl) {
-    return `https://${nextPublicUrl.replace(/\/$/, '')}/api`;
+    const protocol = nextPublicUrl.includes('localhost') ? 'http' : 'https';
+    return `${protocol}://${nextPublicUrl.replace(/\/$/, '')}/api`;
   }
   
   return '/api';
