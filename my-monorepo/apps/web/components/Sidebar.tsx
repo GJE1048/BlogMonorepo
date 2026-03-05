@@ -34,15 +34,15 @@ export function Sidebar({ author, className }: { author: Author; className?: str
 
         <div className="grid grid-cols-3 gap-2 py-2">
           <div className="flex flex-col items-center gap-1">
-            <span className="text-lg font-bold text-[var(--color-text)]">{author.stats.posts}</span>
+            <span className="text-lg font-bold text-[var(--color-text)]">{(author.stats.posts || 0).toLocaleString()}</span>
             <span className="text-xs font-medium text-[var(--color-muted)] uppercase tracking-wider">文章</span>
           </div>
           <div className="flex flex-col items-center gap-1 border-l border-r border-[var(--color-border)]">
-            <span className="text-lg font-bold text-[var(--color-text)]">{author.stats.followers.toLocaleString()}</span>
+            <span className="text-lg font-bold text-[var(--color-text)]">{(author.stats.followers || 0).toLocaleString()}</span>
             <span className="text-xs font-medium text-[var(--color-muted)] uppercase tracking-wider">关注</span>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <span className="text-lg font-bold text-[var(--color-text)]">{author.stats.readingHours}</span>
+            <span className="text-lg font-bold text-[var(--color-text)]">{(author.stats.readingHours || 0).toLocaleString()}</span>
             <span className="text-xs font-medium text-[var(--color-muted)] uppercase tracking-wider">阅读</span>
           </div>
         </div>

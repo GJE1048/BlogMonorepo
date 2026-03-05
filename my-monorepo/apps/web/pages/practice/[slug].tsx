@@ -24,7 +24,8 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
   const { slug } = router.query;
   const problem = getProblemBySlug(slug as string);
   
-  const { getCode, saveCode, updateProgress } = usePracticeStore((state: any) => state);
+  const [mounted, setMounted] = useState(false);
+  const store = usePracticeStore((state: any) => state);
   const [code, setCode] = useState('');
   const [output, setOutput] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -34,6 +35,10 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showHistory, setShowHistory] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const isFrontend = problem ? (
     problem.tags.some(t => ['React', 'Vue', 'DOM', 'CSS', 'Frontend'].includes(t)) || 
     problem.category === 'React' || 
@@ -41,8 +46,8 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
   ) : false;
 
   useEffect(() => {
-    if (problem) {
-      const saved = getCode(problem.id);
+    if (mounted && problem) {
+      const saved = store.getCode(problem.id);
       setCode(saved || problem.templateCode);
       if (isFrontend) {
         setActiveBottomTab('preview');
@@ -58,7 +63,18 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
         console.error('Failed to load history', e);
       }
     }
-  }, [problem, getCode, isFrontend]);
+  }, [mounted, problem, store, isFrontend]);
+
+  if (!mounted) {
+    return (
+      <Layout author={author}>
+        <div className="container mx-auto py-20 text-center flex flex-col items-center justify-center min-h-[400px]">
+          <div className="w-8 h-8 border-4 border-[var(--color-accent)] border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="text-[var(--color-muted)] font-medium">Initializing Practice Environment...</p>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!problem) {
     return (
@@ -92,7 +108,7 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
         // const result = fn(mockConsole);
         
         setOutput(`Running tests...\n\nTest Case 1: Passed\nTest Case 2: Passed\n\nResult: Accepted!`);
-        updateProgress(problem.id, { status: 'solved', attempts: (usePracticeStore.getState() as any).progress[problem.id]?.attempts || 0 + 1 });
+        store.updateProgress(problem.id, { status: 'solved', attempts: (usePracticeStore.getState() as any).progress[problem.id]?.attempts || 0 + 1 });
       } catch (err: any) {
         setOutput(`Error: ${err.message}`);
       } finally {
@@ -102,7 +118,7 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
   };
 
   const handleSave = () => {
-    saveCode(problem.id, code);
+    store.saveCode(problem.id, code);
     
     // Save to history
     const newItem: HistoryItem = {
