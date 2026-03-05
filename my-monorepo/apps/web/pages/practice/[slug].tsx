@@ -14,15 +14,16 @@ import { Button } from '../../components/ui/Button';
 import { fetchAuthor } from '../../lib/api';
 import type { Author } from '../../lib/types';
 
+import type { Problem } from '../../types/problem';
+
 interface HistoryItem {
   timestamp: number;
   code: string;
 }
 
-export default function ProblemDetailPage({ author }: { author: Author }) {
+export default function ProblemDetailPage({ author, problem: initialProblem }: { author: Author; problem: Problem }) {
   const router = useRouter();
-  const { slug } = router.query;
-  const problem = getProblemBySlug(slug as string);
+  const problem = initialProblem;
   
   const [mounted, setMounted] = useState(false);
   const store = usePracticeStore((state: any) => state);
@@ -325,10 +326,17 @@ export default function ProblemDetailPage({ author }: { author: Author }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
+  const { slug } = context.params;
+  const problem = getProblemBySlug(slug as string);
+
+  if (!problem) {
+    return { notFound: true };
+  }
+
   try {
     const author = await fetchAuthor('1');
-    return { props: { author } };
+    return { props: { author, problem } };
   } catch (_err) {
     const author: Author = {
       name: '知夏',
@@ -338,6 +346,6 @@ export async function getServerSideProps() {
       stats: { posts: 0, followers: 0, readingHours: 0, weeklyCompletion: 0 },
       links: [],
     };
-    return { props: { author } };
+    return { props: { author, problem } };
   }
 }
